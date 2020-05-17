@@ -1,0 +1,50 @@
+<html>
+<head>
+  <meta charset="utf-8"/>
+  <link rel="shortcut icon" href="icon.png" />
+  <link rel="stylesheet" href="css/webapp.css">
+  <script src="lib/jquery-3.4.1-min.js" charset="utf-8"></script>
+  <script src="lib/twitch-embed-v1.js" charset="utf-8"></script>
+  <script src="lib/webOSTV-1.2.0.js" charset="utf-8"></script>
+  <script src="js/helper.js" charset="utf-8"></script>
+  <script src="js/ajax-callbacks.js" charset="utf-8"></script>
+  <script src="js/mock-responses.js" charset="utf-8"></script>
+  <script src="js/twitch-client.js" charset="utf-8"></script>
+  <script src="js/twitch-player.js" charset="utf-8"></script> 
+  <script src="js/persistence.js" charset="utf-8"></script> 
+  <script src="js/event-listeners.js" charset="utf-8"></script>
+  
+  <script>
+    document.addEventListener("DOMContentLoaded", function(){
+      setupApp();
+	});
+  </script>
+    
+</head>
+<body>
+  <div id="app">
+    <div id="headers">
+      <div id="searchBar">
+        <span>Channel Name:&nbsp;</span><input type="text" placeholder="test" id="channelInput"></input><button id="loadButton"><span>Load</span></button>
+      </div>
+      <div  id="channelNavBar" class="hidden">
+        <div id="profile"></div>
+        <div>
+          <ul>
+            <li class="tabNav active"><a id="streamNav">Stream</a></li>
+            <li class="tabNav"><a id="videosNav">Videos</a></li>
+            <li class="tabNav"><a id="clipsNav">Clips</a></li>
+            <li class="tabNav"><a id="followersNav">Followers</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div id="tabsContainer"  class="hidden">
+      <div id="stream" class="tab active"></div> 
+      <div id="videos" class="tab"></div>
+      <div id="clips" class="tab"></div>
+      <div id="followers" class="tab"></div>
+    </div>
+  </div>
+</body>
+</html>

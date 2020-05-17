@@ -1,0 +1,10 @@
+{
+    "vendor": "Self Employed",
+    "largeIcon": "largeIcon.png",
+    "icon": "icon.png",
+    "main": "index.html",
+    "id": "com.github.djroush",
+    "title": "webos-viewer",
+    "type": "web",
+    "version": "0.0.1"
+}
