@@ -1,29 +1,3 @@
-var APP;
-
-function setupApp() {
-	var com = com || {};
-	var github = com.github || {};
-	var djroush = github.djroush || {};
-	APP = djroush.webosstreams ||{};
-	APP.twitchClientId = "wt3vscgu64y9f9tmew8ay17xdl3azt";
-	APP.twitchEndpoint = "https://api.twitch.tv/helix";
-	APP.callbackUrl = encodeURIComponent('http://localhost');
-	
-    //Check if an access token exist, otherwise redirect to twitch to get one
-    var [_, matrixParams] = document.location.href.split('#')
- 	  if (matrixParams !== undefined) {
- 	    var keyValues = matrixParams.split('&')
- 	    if (keyValues !== undefined) {
- 	      APP.userAccessToken = keyValues.find(e => e !== null && e.includes('access_token=')).split('=')[1];
- 	    }
-    }    
-    if (APP.userAccessToken === null || APP.userAccessToken === undefined) {
-	    window.location = 'https://id.twitch.tv/oauth2/authorize?client_id=' + APP.twitchClientId + 
-	    	'&redirect_uri=' + APP.callbackUrl + '&response_type=token&scope=';    	  
-    }
-}
-
-
 String.prototype.isEmpty = function() {
     return (this.length === 0 || !this.trim());
 };

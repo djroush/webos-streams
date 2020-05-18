@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title>WebOs Streams</title>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <!--script src="lib/twitch-embed-v1.js" charset="utf-8"></script>    
+    <script src="js/twitch-client.js" charset="utf-8"></script>
+    <script src="js/twitch-player.js" charset="utf-8"></script--> 
+
+    <script src="js/helper.js" charset="utf-8"></script>
+    <script src="js/persistence.js" charset="utf-8"></script> 
+  
+    <script>
+      //Handle setup for this app
+      document.addEventListener("DOMContentLoaded", function(){
+        var com = com || {};
+        var github = com.github || {};
+        var djroush = github.djroush || {};
+        APP = djroush.webosstreams || {};
+        
+        APP.Config = APP.Config || {};
+        APP.Config.twitchClientId = "wt3vscgu64y9f9tmew8ay17xdl3azt";
+        APP.Config.twitchEndpoint = "https://api.twitch.tv/helix";
+        APP.Config.callbackUrl = encodeURIComponent('http://localhost');
+        
+          //Check if an access token exist, otherwise redirect to twitch to get one
+          var [_, matrixParams] = document.location.href.split('#')
+          if (matrixParams !== undefined) {
+            var keyValues = matrixParams.split('&')
+            if (keyValues !== undefined) {
+              APP.Config.userAccessToken = keyValues.find(e => e !== null && e.includes('access_token=')).split('=')[1];
+            }
+          }    
+          if (APP.Config.userAccessToken === null || APP.Config.userAccessToken === undefined) {
+            window.location = 'https://id.twitch.tv/oauth2/authorize?client_id=' + APP.Config.twitchClientId + 
+              '&redirect_uri=' + APP.Config.callbackUrl + '&response_type=token&scope=';    	  
+          }  
+        }
+      );
+    </script>
+  </head>
+  <body>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+    <div id="root"></div>
+  <script src="index.js"></script>
+  </body>
+</html>

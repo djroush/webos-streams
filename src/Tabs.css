@@ -1,0 +1,15 @@
+
+.tab {
+	visibility: hidden;
+	height:0px;
+}
+
+.tab.active {
+	max-height: inherit;
+	visibility: visible;
+	height: auto;
+}
+.hidden {
+	visibility: hidden;
+	display: none;
+}

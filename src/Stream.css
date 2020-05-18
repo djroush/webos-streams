@@ -1,0 +1,11 @@
+.profileImage {
+	width: 36px;
+	height: 36px;
+	border-radius: 18px;
+	padding: 0px 8px;
+}
+.offlineImage {
+	height: auto;
+	margin: auto;
+	max-height: inherit;
+}

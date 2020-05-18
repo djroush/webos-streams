@@ -1,0 +1,52 @@
+#searchBar {
+	height: 50px;
+	background-color: #18181B;
+}
+#searchBar span {
+	height: 19px;
+}
+
+#channelInput {
+	background-color: rgba(255,255,255,0.15);
+	border-color: rgba(255,255,255,0.5);
+	border-radius: 6px 0px 0px 6px;
+	padding: 5px 10px 10px 5px;
+	max-width: 400px;
+	width: 355px;
+}
+#channelInput:focus {
+	background-color: #000000;
+	border-color: #A970FF;
+}
+
+#profile {
+	position:absolute;
+	float: left;
+	text-align:left;
+	width: 300px;
+	height: 40px;
+}
+
+#channelNavBar {
+	height: 40px;
+	background-color: #323232;
+}
+
+#channelNavBar span {
+	height: 40px;
+}
+
+#tabsContainer {
+	max-width: calc(100vw - 56px);	
+	max-height: calc(100vh - 138px);
+	height: auto;
+	width: auto;
+	margin: 20px; 
+	overflow: hidden;
+}
+
+.tabNav.active{
+	border-bottom-color: #EFEFF1;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+}
