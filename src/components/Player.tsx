@@ -1,31 +1,32 @@
-import React, { Component, useRef } from 'react';
-import './Stream.css';
+import React, { Component } from 'react';
 
-class Stream extends Component {
-  
-  streamDiv;
+class Player extends Component {
+
+  playerDiv;
+  player = undefined;
+
   constructor(props) {
     super(props);
-    this.streamDiv = React.createRef();
+    this.playerDiv = React.createRef();
   }
+
 
   render() {
     return (
-	  <div id="stream" className="tab active" ref={this.streamDiv}></div>
+	    <div id="twitch-embed" ref={playerDiv}></div>
     );
   }
 
-  getStreamCallback(getStreamResponse) {
-	  //TOOD: use this or remove the parameter
+  getStreamCallback() {
 	  var user = retrieveUser();
-	  streamDiv.empty();
-    streamDiv.append('<div id="twitch-embed"></div>');
+	  //TODO: see if this works correctly
+	  this.render();
 	  playStream(user.login, false);
   }
 
   playStream(channel, withChat) {
     var layout = withChat ? 'video-with-chat' : 'video';
-    var player = new Twitch.Embed("twitch-embed", {
+    player = new Twitch.Embed("twitch-embed", {
       width: 1024,
       height: 768,
       channel: channel,
@@ -36,7 +37,7 @@ class Stream extends Component {
   }
 
   playVideo(videoid) {
-    var player = new Twitch.Embed("twitch-embed", {
+    player = new Twitch.Embed("twitch-embed", {
       width: 1024,
       height: 768,
       video: videoid,
@@ -45,7 +46,6 @@ class Stream extends Component {
       theme: "dark"
     });
   }
-
 }
 
-export default Stream;
+export default Player;

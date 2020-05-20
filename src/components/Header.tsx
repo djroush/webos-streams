@@ -5,21 +5,21 @@ class Header extends Component {
   render() {
     return (
 	    <div>
-	  	  <div id="searchBar">
-		      <span>Channel Name:&nbsp;</span><input type="text" placeholder="test" id="channelInput" onKeyUp={this.checkKeyPress}></input><button id="loadButton onClick={loadChannel}">Load</button>
-		    </div>
-		    <div id="channelNavBar" className="hidden">
-		      <div id="profile"></div>
-		      <div>
-			      <ul>
-			        <li className="tabNav active"><a id="streamNav" onClick={this.showTab}>Stream</a></li>
-			        <li className="tabNav"><a id="videosNav" onClick={this.showTab}>Videos</a></li>
-			        <li className="tabNav"><a id="clipsNav" onClick={this.showTab}>Clips</a></li>
-			      </ul>
-		      </div>
-		    </div>
-	    </div>
-    );
+	   	  <div id="searchBar">
+		       <span>Channel Name:&nbsp;</span><input type="text" placeholder="test" id="channelInput" onKeyUp={this.checkKeyPress}></input><button id="loadButton onClick={loadChannel}">Load</button>
+		     </div>
+		     <div id="channelNavBar" className="hidden">
+		       <div id="profile"></div>
+		       <div>
+		 	      <ul>
+		 	        <li className="tabNav active"><a id="streamNav" onClick={this.showTab}>Stream</a></li>
+		 	        <li className="tabNav"><a id="videosNav" onClick={this.showTab}>Videos</a></li>
+		 	        <li className="tabNav"><a id="clipsNav" onClick={this.showTab}>Clips</a></li>
+		 	      </ul>
+		       </div>
+		     </div>
+	     </div>
+     );
   }
 
   loadChannel() {

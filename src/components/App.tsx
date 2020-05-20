@@ -1,17 +1,18 @@
-import React, { Component } from 'react';
+import React, {Component} from 'react';
 import './App.css';
 import Header from './Header';
 import Tabs from './Tabs';
 
+
 class App extends Component {
   render() {
-    return (
+    return <Header/>;
+  };
+}
+/*
       <div className="App">
         <Header/>
-		    <Tabs/>
+        <Tabs/>
       </div>
-    );
-  }
-}
-
+*/
 export default App;

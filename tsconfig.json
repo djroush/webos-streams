@@ -1,0 +1,31 @@
+{ 
+   "compilerOptions":{ 
+      "target":"es6",
+      "jsx":"react",
+      "moduleResolution":"node",
+      "module":"es6",
+      "baseUrl":"src/",
+      "outDir":"dist/",
+      "sourceMap":true,
+      "pretty":true,
+      "listFiles":false,
+      "declaration":false,
+      "noLib":false,
+      "emitDecoratorMetadata":true,
+      "esModuleInterop":true,
+      "experimentalDecorators":true,
+      "allowUnreachableCode":true,
+      "allowUnusedLabels":true,
+      "noImplicitAny":true,
+      "noImplicitReturns":false,
+      "noImplicitUseStrict":false,
+      "noEmitHelpers":true
+   },
+   "include":[ 
+      "src/**/*"
+   ],
+   "exclude":[ 
+      "node_modules"
+   ],
+   "compileOnSave":true
+}

@@ -7,11 +7,11 @@ import Stream from './Stream';
 class Tabs extends Component {
   render() {
     return (
-        <div id="tabsContainer" className="hidden">
-          <Stream/>
-          <Videos/>
-          <Clips/>
-        </div>
+        // <div id="tabsContainer" className="hidden">
+        //   <Stream/>
+        //   <Videos/>
+        //   <Clips/>
+        // </div>
     );
   }
 
@@ -41,14 +41,11 @@ class Tabs extends Component {
             //getVideosCallback(getVideosResponse);
             break;
         case 'Clips':
-        	getClips(userid);
-        	//getClipsCallback(getClipsResponse);
             break;
         default: console.warn("Invalid tab (" + activeTab + ") while attempting to load data");
         }
     }
-}
-
+  }
 
 }
 

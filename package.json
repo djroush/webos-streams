@@ -2,11 +2,11 @@
   "name": "webos-streams",
   "version": "1.0.0",
   "description": "A React application which integrates with the Twitch APIs",
-  "main": "./dist/index.js",
+  "main": "./dist/index.tsx",
   "scripts": {
     "start": "node ./node_modules/parcel-bundler/bin/cli serve ./src/index.html --port 80",
     "build": "node ./node_modules/parcel-bundler/bin/cli build ./src/index.html --out-dir ./dist/",
-    "lint": "node ./node_modules/eslint/bin/eslint . --ext .jsx,.js --fix",
+    "lint": "node ./node_modules/eslint/bin/eslint . --ext .jsx,.js,.ts --fix",
     "test": "jest"
   },
   "babel": {
@@ -30,12 +30,19 @@
   "devDependencies": {
     "@babel/core": "^7.9.6",
     "@babel/plugin-proposal-class-properties": "^7.8.3",
+    "@types/react": "^16.9.35",
+    "@types/react-dom": "^16.9.8",
+    "@typescript-eslint/eslint-plugin": "^2.34.0",
+    "@typescript-eslint/parser": "^2.34.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
     "eslint": "^7.0.0",
     "eslint-config-airbnb-base": "^14.1.0",
     "eslint-plugin-import": "^2.20.2",
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.20.0",
     "jest": "^26.0.1",
-    "parcel-bundler": "^1.12.4"
+    "parcel-bundler": "^1.12.4",
+    "typescript": "^3.9.3"
   }
 }
