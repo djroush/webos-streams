@@ -1,12 +1,13 @@
 import React, { Component, RefObject, MouseEvent } from 'react';
-import './Clips.css';
-import TwitchInterface from '../clients/TwitchInterface';
+import './ClipsTab.css';
+import TwitchClientInterface from '../clients/TwitchClient';
 import TwitchClientFactory from '../clients/TwitchClientFactory';
-import TimeHelper from '../js/TimeHelper';
+import {APP} from '../Config';
 
-class Clips extends Component {
+class ClipsTab extends Component {
 
-  twitchClient: TwitchInterface = TwitchClientFactory.getInstance();  
+  twitchClient: TwitchClientInterface = TwitchClientFactory.getInstance(); 
+  self: ClipsTab = this; 
   
   clipsDiv: RefObject<HTMLDivElement>;
   constructor(props:any) {
@@ -21,17 +22,19 @@ class Clips extends Component {
   }
 
   componentDidMount() {
-      this.twitchClient.getClips(userid, this.getClipsCallback);
-  }
+	//TODO: pull in users id from somewhere
+	/*	const user = APP.State.User;
+	      this.twitchClient.getClips(user.id, this.getClipsCallback);
+*/  }
 
 
   //TODO: add a type for this
-  getClipsCallback(getClipsResponse: object) {
+  getClipsCallback(getClipsResponse: any) {
     var now = new Date();
   	$.each(getClipsResponse.data, function(_, value){
       var thumb_url= value.thumbnail_url;
       var created_date = new Date(value.created_at);
-      var seconds = Math.round((now - created_date)/1000);
+      var seconds = Math.round((now.getTime() - created_date.getTime())/1000);
       var relative_created_time = TimeHelper.getFuzzyDuration(seconds);
           
       this.clipsDiv.append(
@@ -45,12 +48,13 @@ class Clips extends Component {
   	
   }
 
-  clipsClickListeners(event: MouseEvent) {
-      var clipid = event.currentTarget.getAttribute("data-id");
-      activateTab("stream");
-      playVideo(clipid);    	
+  //parent has this function, bind and pass in via props
+  clipsClickListeners() {
+//      var clipid = event.currentTarget.getAttribute("data-id");
+//      activateTab("stream");
+//      playVideo(clipid);    	
   };
 
 }
 
-export default Clips;
+export default ClipsTab;

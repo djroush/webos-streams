@@ -1,8 +1,7 @@
 import React, { Component, RefObject, MouseEvent } from 'react';
-import './Videos.css';
-import TimeHelper from '../js/TimeHelper';
+import './VideosTab.css';
 
-class Videos extends Component {
+class VideosTab extends Component {
 
   videosDiv: RefObject<HTMLDivElement>;
   constructor(props: any) {
@@ -25,7 +24,7 @@ class Videos extends Component {
   	$.each(getVideosResponse.data, function(_, value){
   		var thumb_url= value.thumbnail_url.replace("%{width}", "304").replace("%{height}", "171");
   		var published_date = new Date(value.published_at);
-  		var seconds = Math.round((now - published_date)/1000);
+  		var seconds = Math.round((now.getTime() - published_date.getTime())/1000);
   		var relative_publish_time = TimeHelper.getFuzzyDuration(seconds);
   		var duration = TimeHelper.formatDuration(value.duration);
 		  
@@ -42,10 +41,11 @@ class Videos extends Component {
   }
 
   videoClickListeners(event:MouseEvent) {
-	var videoid = event.currentTarget.getAttribute("data-id");
+/*	var videoid = event.currentTarget.getAttribute("data-id");
 	activateTab("stream");
 	playVideo(videoid);
+*/
   }
 }
 
-export default Videos;
+export default VideosTab;

@@ -1,21 +1,21 @@
-import TwitchInterface from './TwitchInterface';
+import TwitchClient from './TwitchClient';
 
-class TwitchClientMock implements TwitchInterface {
+class TwitchClientMock implements TwitchClient {
 
-    getUser(username: string, callback: () => void) {
+    public getUser(username: string, callback: (response: any) => void) {
         console.log('Returning mock user response for username: ' + username);
-        callback.apply(this.getUserResponse);
+        callback(this.getUserResponse);
     }
 
-    getStream(userid: number, callback: () => void) {
+    public getStream(userid: string, callback: (response: any) => void) {
         console.log('Returning mock stream response for userid: ' + userid);
-        callback();
+        callback(this.getStreamResponse);
     }
-	getVideos(userid: number, callback: () => void) {
+	public getVideos(userid: string, callback: (response: any) => void) {
         console.log('Returning mock videos response for userid: ' + userid);
         callback.apply(this.getVideosResponse);
     }
-	getClips(userid: number, callback: () => void) {
+	public getClips(userid: string, callback: (response: any) => void) {
         console.log('Returning mock clips response for userid: ' + userid);
         callback.apply(this.getClipsResponse);
     }

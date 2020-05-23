@@ -1,14 +1,15 @@
-import { APP } from '../js/Config';
+import { APP } from '../Config';
+
 import TwitchClient from './TwitchClient';
 import TwitchClientMock from './TwitchClientMock';
-import TwitchInterface from './TwitchInterface';
+import TwitchClientImpl from './TwitchClientImpl';
 
 class TwitchClientFactory {
-  static getInstance(): TwitchInterface {
-     if (!APP.Config.mockTwitch) {
-       return new TwitchClient(); 
+  static getInstance(): TwitchClient {
+     if (APP.Config.mockTwitch) {
+       return new TwitchClientMock();
      } else {
-        return new TwitchClientMock();
+       return new TwitchClientImpl(); 
      }
   }
 }
