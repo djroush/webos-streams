@@ -1,4 +1,4 @@
-export let APP: AppType;
+export let APP: AppModel;
 
 class Config {
   static setup() {
@@ -17,7 +17,7 @@ class Config {
 	APP.State = {};
 
 	//Check if an access token exist, otherwise redirect to twitch to get one
-	var [_, matrixParams] = document.location.href.split('#')
+	const matrixParams = document.location.href.split('#')[1]
 	if (matrixParams !== undefined) {
 	  var keyValues = matrixParams.split('&')
 	  if (keyValues !== undefined) {

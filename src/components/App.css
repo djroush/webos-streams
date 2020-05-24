@@ -43,11 +43,6 @@
 	height: 40px;
 }
 
-.tabNav.active{
-	border-bottom-color: #EFEFF1;
-	border-bottom-width: 2px;
-	border-bottom-style: solid;
-}
 
 /*TabsContainer Component */
 #tabsContainer {
@@ -64,7 +59,7 @@
 	height:0px;
 }
 
-.tab.active {
+.activeTab {
 	max-height: inherit;
 	visibility: visible;
 	height: auto;

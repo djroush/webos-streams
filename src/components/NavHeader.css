@@ -1,0 +1,5 @@
+.tabNav.active {
+	border-bottom-color: #EFEFF1;
+	border-bottom-width: 2px;
+	border-bottom-style: solid;
+}

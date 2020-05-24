@@ -1,25 +1,42 @@
-import React, { Component, RefObject, MouseEvent } from 'react';
+import React, { Component } from 'react';
+
 import './VideosTab.css';
 
-class VideosTab extends Component {
+import {APP} from '../Config';
+import TwitchClient from '../clients/TwitchClient'
+import TwitchClientFactory from '../clients/TwitchClientFactory'
+import TimeHelper from '../helper/TimeHelper'; 
 
-  videosDiv: RefObject<HTMLDivElement>;
+import $ from 'jquery';
+
+class VideosTab extends Component {
+  twitchClient: TwitchClient = TwitchClientFactory.getInstance();
+
   constructor(props: any) {
 	super(props);
-	this.videosDiv = React.createRef();
   }
 
   render() {	
     return (
-      <div id="videos" className="tab" ref={this.videosDiv}></div>
+      <div id="videos" className="tab"></div>
     );
   }
 
-  componentDidMount() {
-//Call to client here?
+  setState(state: TabState) {
+    this.state = state;	
+  } 
+
+
+  //TODO: call the twitch client somewhere, maybe make this call when visible?
+  componentDidUpdate() {
+	const user = APP.State.User;
+	if (user && user.id) {
+	  this.twitchClient.getVideos(user.id, this.getVideosCallback);	
+	}
   }
 
-  getVideosCallback(getVideosResponse: any) {
+
+  getVideosCallback = (getVideosResponse: any) => {
     var now = new Date();
   	$.each(getVideosResponse.data, function(_, value){
   		var thumb_url= value.thumbnail_url.replace("%{width}", "304").replace("%{height}", "171");
@@ -29,7 +46,7 @@ class VideosTab extends Component {
   		var duration = TimeHelper.formatDuration(value.duration);
 		  
 
-  		this.videosDiv.append(
+  		$('#videosDiv').append(
   			'<div class="video">' +
   			    '<a href="javascript:void(0)" onClick="{this.videoClickListeners} data-id="' + value.id + '"><img src="' + thumb_url + '"></img></a>' +
   			    '<div class="overlay topLeft">' + duration + '</div>' + 
@@ -40,12 +57,6 @@ class VideosTab extends Component {
   	})
   }
 
-  videoClickListeners(event:MouseEvent) {
-/*	var videoid = event.currentTarget.getAttribute("data-id");
-	activateTab("stream");
-	playVideo(videoid);
-*/
-  }
 }
 
 export default VideosTab;

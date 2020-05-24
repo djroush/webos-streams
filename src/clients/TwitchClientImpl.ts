@@ -1,6 +1,8 @@
 import TwitchClient from './TwitchClient';
 import { APP } from '../Config';
 
+import $ from 'jquery';
+
 class TwitchClientImpl implements TwitchClient {
 
   private setRequestHeaders(xhr: JQuery.jqXHR<any>) {

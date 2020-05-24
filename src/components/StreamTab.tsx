@@ -1,20 +1,31 @@
 import React, {Component} from 'react';
+
 import './StreamTab.css';
 
-class StreamTab extends Component {
-  Twitch = require('../lib/twitch-embed-v1.js');  
+class StreamTab extends Component implements StreamTab {
+  props: TabProps;
+  state: TabState = {
+	active: false
+  }
+  constructor(props: Readonly<any>) {
+	super(props); 
+  }   
 
   render() {
-    return ( 
-      <div id="stream" className="tab active">
-        <div id="twitch-embed"></div>
-      </div>
-    );
+	if (this.state.active) {
+      return (<div id="stream" className="tab"><div id="twitch-embed"/></div>);
+    } else {
+	  return (null)
+    }
   }
+
+  setState(state: TabState) {
+    this.state = state;	
+  } 
 
   playStream(channel: string, withChat: boolean) {
     var layout = withChat ? 'video-with-chat' : 'video';
-    new this.Twitch.Embed("twitch-embed", {
+    new Twitch.Embed("twitch-embed", {
       width: 1024,
       height: 768,
       channel: channel,
@@ -25,7 +36,7 @@ class StreamTab extends Component {
   }
 
   playVideo(videoid: number) {
-    new this.Twitch.Embed("twitch-embed", {
+    new Twitch.Embed("twitch-embed", {
       width: 1024,
       height: 768,
       video: videoid,

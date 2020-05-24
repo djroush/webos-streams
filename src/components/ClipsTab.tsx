@@ -1,60 +1,75 @@
-import React, { Component, RefObject, MouseEvent } from 'react';
+import React, { Component } from 'react';
+
 import './ClipsTab.css';
+
+import {APP} from '../Config'; 
 import TwitchClientInterface from '../clients/TwitchClient';
 import TwitchClientFactory from '../clients/TwitchClientFactory';
-import {APP} from '../Config';
+import TimeHelper from '../helper/TimeHelper'; 
+
+import $ from 'jquery';
+
+import ReactDOM from 'react-dom'
 
 class ClipsTab extends Component {
+  twitchClient: TwitchClientInterface = TwitchClientFactory.getInstance();
 
-  twitchClient: TwitchClientInterface = TwitchClientFactory.getInstance(); 
-  self: ClipsTab = this; 
+  clipsDiv: HTMLDivElement;
+  state: TabState = {
+	active: false
+  }
+  props: TabProps;
   
-  clipsDiv: RefObject<HTMLDivElement>;
   constructor(props:any) {
     super(props);
-    this.clipsDiv = React.createRef();
+    this.props = props;
   }
 
   render() {
-    return (
-      <div id="clips" className="tab" ref={this.clipsDiv}></div>
-    );
+	if (this.state.active) {
+      return (<div id="clips" ref={(node) => { this.clipsDiv = node;}} className="tab"></div>);
+    } else {
+	  return (null)
+    }
   }
 
-  componentDidMount() {
-	//TODO: pull in users id from somewhere
-	/*	const user = APP.State.User;
-	      this.twitchClient.getClips(user.id, this.getClipsCallback);
-*/  }
+  setState(state: TabState) {
+    this.state = state;	
+  } 
 
+  componentDidMount() {
+	const user = APP.State.User;
+	if (user && user.id) {
+	  const callback = this.getClipsCallback.bind(this);
+	  //this.twitchClient.getClips(user.id, this.getClipsCallback);
+      this.twitchClient.getClips(user.id, callback);
+	}
+  }
+  
 
   //TODO: add a type for this
   getClipsCallback(getClipsResponse: any) {
-    var now = new Date();
-  	$.each(getClipsResponse.data, function(_, value){
-      var thumb_url= value.thumbnail_url;
-      var created_date = new Date(value.created_at);
-      var seconds = Math.round((now.getTime() - created_date.getTime())/1000);
-      var relative_created_time = TimeHelper.getFuzzyDuration(seconds);
-          
-      this.clipsDiv.append(
-        '<div class="video">' +
-          '<a href="javascript:void(0)" data-id="' + value.id + ' onClick={clipsClickListener}"><img src="' + thumb_url + '"></img></a>' +
-          '<div class="overlay bottomLeft">' + value.view_count + ' views</div>' + 
-          '<div class="overlay bottomRight">' + relative_created_time + '</div>' + 
-        '</div>'
-      );
-  	})
-  	
+    const clipElems : JSX.Element[] = [];
+    const callback = this.getClip.bind(this, clipElems);
+  	$.each(getClipsResponse.data, callback)
+    ReactDOM.render(clipElems, this.clipsDiv);
   }
-
-  //parent has this function, bind and pass in via props
-  clipsClickListeners() {
-//      var clipid = event.currentTarget.getAttribute("data-id");
-//      activateTab("stream");
-//      playVideo(clipid);    	
-  };
-
+  getClip(clipElems: JSX.Element[], index: number, clip: ClipsType) {
+      const now = new Date();
+      const created_date = new Date(clip.created_at);
+      const seconds = Math.round((now.getTime() - created_date.getTime())/1000);
+	  clip.relative_created_time = TimeHelper.getFuzzyDuration(seconds);
+      const clipDivElem: JSX.Element = ( 
+	     <div className="video">
+           <a href="javascript:void(0)" data-id={clip.id} onClick={this.props.clickListener}>
+             <img src={clip.thumbnail_url}></img>
+           </a>
+           <div className="overlay bottomLeft">{clip.view_count} views</div>
+           <div className="overlay bottomRight">{clip.relative_created_time}</div> 
+         </div>);
+      clipElems.push(clipDivElem);
+  	}
+  
 }
 
 export default ClipsTab;
