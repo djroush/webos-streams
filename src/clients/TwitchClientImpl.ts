@@ -19,7 +19,7 @@ class TwitchClientImpl implements TwitchClient {
       dataType: 'json',
       beforeSend: this.setRequestHeaders,
       success: callback,
-        error: function(jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
+        error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup user ' + username + '.  Received ' + textStatus + ' status code.\r\n' +
             'error: ' + errorThrown);
         }
@@ -38,7 +38,7 @@ class TwitchClientImpl implements TwitchClient {
         dataType: 'json',
         beforeSend: this.setRequestHeaders,
         success: callback,
-        error: function(jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
+        error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup stream for userid ' + userid + '.  Received ' + textStatus + ' status code.\r\n' +
                 'error: ' + errorThrown);
         } 
@@ -56,7 +56,7 @@ class TwitchClientImpl implements TwitchClient {
         dataType: 'json',
         beforeSend: this.setRequestHeaders,
         success: callback,
-        error: function(jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
+        error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup videos for userid ' + userid + '.  Received ' + textStatus + ' status code.\r\n' +
               'error: ' + errorThrown);
         }
@@ -78,7 +78,7 @@ class TwitchClientImpl implements TwitchClient {
         dataType: 'json',
         beforeSend: this.setRequestHeaders,
         success: callback,
-        error: function(jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
+        error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup clips for userid ' + userid + '.  Received ' + textStatus + ' status code.\r\n' +
               'error: ' + errorThrown);
         }

@@ -14,19 +14,18 @@ class NavHeader extends Component {
   }
 
   setState(state: NavHeaderState) {
+    super.setState(state);
     this.state = state;	
   } 
 
   render() {
-	if (this.state.active) {
+	const className = "tabNav" + (this.state.active ? " active" : "");
       return (
-        <li id={this.props.id} className="tabNav"><a onClick={this.props.clickListener}>{this.props.text}</a></li>);
-    } else {
-	  return (null)
-    };
-    
+        <li id={this.props.id}className={className}>
+		  <a onClick={this.props.clickListener}>{this.props.text}</a>
+       </li>
+      );
   }
-
 }
 
 export default NavHeader;

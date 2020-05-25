@@ -6,7 +6,7 @@ import StreamTab from './StreamTab';
 import ClipsTab from './ClipsTab';
 import VideosTab from './VideosTab';
 import NavHeader from './NavHeader';
-import Config, {APP} from '../Config'; 
+import Config from '../Config'; 
 import TwitchClient from '../clients/TwitchClient'
 import TwitchClientFactory from '../clients/TwitchClientFactory'
 
@@ -22,7 +22,10 @@ class App extends Component {
   videosTab: VideosTab;
   clipsTab: ClipsTab;
   
-  state: AppState = {}
+  state: AppState = {
+	activeTab: null,
+	user: null
+  }
 
   constructor(props: Readonly<any>) {
 	super(props);
@@ -34,7 +37,11 @@ class App extends Component {
     return ( 
       <div className="App">
         <div id="header">
-          <this.searchBarElem/>
+	      <div id="searchBar">
+            <span>Channel Name:&nbsp;</span>
+	        <input type="text" placeholder="test" id="channelInput" onKeyUp={this.checkKeyPress}/>
+            <button id="loadButton" onClick={this.loadChannel}>Load</button>
+	      </div>
           <this.channelNavBarElem/> 
 	    </div>
         <this.tabsContainerElem/>
@@ -42,16 +49,6 @@ class App extends Component {
 	);
   }
 
-  searchBarElem = (): JSX.Element => {
-	return (
-	  <div id="searchBar">
-        <span>Channel Name:&nbsp;</span>
-	    <input type="text" placeholder="test" id="channelInput" onKeyUp={this.checkKeyPress}/>
-        <button id="loadButton" onClick={this.loadChannel}>Load</button>
-	  </div>
-    )
-  }
-	
   channelNavBarElem = (): JSX.Element => {
 	if (this.state.user) {
 	  return (
@@ -101,7 +98,6 @@ class App extends Component {
   };
   private clickNavHeader = (event:React.MouseEvent): void => {
 	const target: EventTarget = event.target;
-	
 	if (target instanceof Element) {
 		const tab: string = target.textContent.toLowerCase();
 		this.setActiveTab(tab);		
@@ -115,21 +111,20 @@ class App extends Component {
         this.twitchClient.getUser(channel, callback);
     }
   };
- 
 
   setUser = (user: UserType): void => {
-	APP.State.User = user;
-	this.setState({ user: user, activeTab: "stream"});
+	this.state.user = user;
+	this.setActiveTab("stream");
   }
   setActiveTab = (tab: string): void => {
 	this.setState({ user: this.state.user, activeTab: tab});
 
-    this.streamTab.setState({active: tab === 'stream'})
-    this.streamNav.setState({active: tab === 'stream'})
-    this.videosTab.setState({active: tab === 'videos'})
-    this.videosNav.setState({active: tab === 'videos'})
-    this.clipsTab.setState({active: tab === 'clips'})
-    this.clipsNav.setState({active: tab === 'clips'})
+    this.streamTab.setState({active: tab === 'stream', user: this.state.user});
+    this.videosTab.setState({active: tab === 'videos', user: this.state.user});
+    this.clipsTab.setState({active: tab === 'clips', user: this.state.user});
+    this.streamNav.setState({active: tab === 'stream'});
+    this.videosNav.setState({active: tab === 'videos'});
+    this.clipsNav.setState({active: tab === 'clips'});
   }
 
   tabProps: TabProps = {
@@ -144,15 +139,8 @@ class App extends Component {
     if (response && response.data.length == 1) {
         const user: UserType = response.data[0];
 		this.setUser(user);
-		this.setActiveTab('stream')
+		this.streamTab.playStream(user.login, false);
     }
-  }
-
-// FIXME: Do i need this method
-  getStreamCallback = (): void => {
-	const user = APP.State.User;
-	this.setActiveTab("stream");
-	this.streamTab.playStream(user.login, false);
   }
 
   getVideosCallback = (event: MouseEvent): void => {
@@ -160,7 +148,6 @@ class App extends Component {
 	this.setActiveTab("stream");
 	this.streamTab.playVideo(videoid);
   }
-
 }
 
 export default App;

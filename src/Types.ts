@@ -8,6 +8,15 @@ type UserType = {
 	view_count: number;
 }
 	
+type VideoType = {
+	id: string,
+	thumbnail_url: string,
+	published_at: string,
+	duration: string,
+	view_count: number
+	relative_published_time: string;
+}
+
 type ClipsType = {
 	id: string,
 	thumbnail_url: string,
@@ -15,6 +24,7 @@ type ClipsType = {
 	view_count: number
 	relative_created_time: string;
 }
+
 	
 type StateType = {
 	User?: UserType;
@@ -45,7 +55,8 @@ type NavHeaderState = {
   active: boolean
 }
 type TabState = {
-  active: boolean
+  active: boolean,
+  user: UserType | null
 }
 //Props
 type TabProps = {

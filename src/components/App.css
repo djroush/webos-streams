@@ -55,16 +55,12 @@
 }
 
 .tab {
+    height: 0;
 	visibility: hidden;
-	height:0px;
 }
 
-.activeTab {
-	max-height: inherit;
+.tab.active {
+    height: auto;
+    max-height: inherit;
 	visibility: visible;
-	height: auto;
-}
-.hidden {
-	visibility: hidden;
-	display: none;
 }
