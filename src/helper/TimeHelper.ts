@@ -38,4 +38,4 @@ class TimeHelper {
   }
 }
 
-export default TimeHelper;
+module.exports = TimeHelper;
