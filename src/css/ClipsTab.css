@@ -1,7 +1,7 @@
-.video {
-	position: relative;
-	display: inline-block;
-	padding: 8px;
+.clip {
+  display: inline-block;
+  min-width: 308px;
+  width: 15%;	
 }
 .overlay {
 	background-color: #000000;
@@ -9,11 +9,6 @@
 	padding: 2px;
 	opacity: 0.8; 
 	line-height: 9px;
-}
-.topLeft {
-  position: absolute;
-  top: 0px;
-  left: 8px;
 }
 .bottomLeft {
   position: absolute;
@@ -24,8 +19,4 @@
   position: absolute;
   bottom: 8px;
   right: 8px;
-}
-.clip {
-  min-width: 308px;
-  width: 15%;	
 }

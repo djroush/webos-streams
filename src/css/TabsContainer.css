@@ -1,0 +1,19 @@
+#tabsContainer {
+	max-width: calc(100vw - 56px);	
+	max-height: calc(100vh - 138px);
+	height: auto;
+	width: auto;
+	margin: 20px; 
+	overflow: hidden;
+}
+
+.tab {
+    height: 0;
+	visibility: hidden;
+}
+
+.tab.active {
+    height: auto;
+    max-height: inherit;
+	visibility: visible;
+}

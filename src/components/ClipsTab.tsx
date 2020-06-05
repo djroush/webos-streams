@@ -1,70 +1,79 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import './ClipsTab.css';
+import '../css/ClipsTab.css';
 
-import TwitchClientInterface from '../clients/TwitchClient';
-import TwitchClientFactory from '../clients/TwitchClientFactory';
+import TwitchClientFactory, {TwitchClient} from '../clients/TwitchClientFactory';
 import TimeHelper from '../helper/TimeHelper'; 
 
-import $ from 'jquery';
-import ReactDOM from 'react-dom';
+type ClipsTabProps = {
+	isActive: boolean,
+	clipClick: (event: React.MouseEvent<any, any>) => void
+}
+type ClipsTabState = {
+	clips?: AppClip[],
+	user?: TwitchUser
+}
 
-class ClipsTab extends Component {
-  twitchClient: TwitchClientInterface = TwitchClientFactory.getInstance();
-  clipsDiv: HTMLDivElement;
+class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
+  twitchClient: TwitchClient = TwitchClientFactory.getInstance();
 
-  state: TabState = {
-	active: false,
-	user: null
-  }
-  props: TabProps;
-  
-  constructor(props:any) {
-    super(props);
-    this.props = props;
-  }
-
-  render() {
-	const className = "tab" + (this.state.active ? " active" : "");
-    return (<div id="clips" ref={(node) => { this.clipsDiv = node;}} className={className}></div>);
+  setUser(user: TwitchUser) {
+	const callback = this.getClipsCallback.bind(this, user);
+     this.twitchClient.getClips(user.id, callback);
   }
 
-  setState(state: TabState) {
-    super.setState(state);	
-    this.state = state;
-  } 
+  shouldComponentUpdate(_nextProps: ClipsTabProps, nextState: ClipsTabState) {
+    return 	nextState.clips !== null
+  }
 
-  componentDidUpdate() {
-	const user = this.state.user;
-	if (user && user.id) {
-	  const callback = this.getClipsCallback.bind(this);
-      if (this.state.active) {
-        this.twitchClient.getClips(user.id, callback);
+  getClipsCallback(user: TwitchUser, getClipsResponse: TwitchClipsResponse) {
+	const twitchClips: TwitchClip[] = getClipsResponse.data
+    const clips: AppClip[] = []
+    twitchClips.forEach(function(twitchClip: TwitchClip) {
+	  const now = new Date();
+	  const created_date = new Date(twitchClip.created_at);
+	  const seconds = Math.round((now.getTime() - created_date.getTime())/1000);
+	  const relative_created_time = TimeHelper.getFuzzyDuration(seconds);
+
+	  const clip: AppClip = {
+		id: twitchClip.id,
+		thumbnail_url: twitchClip.thumbnail_url,
+		created_date: created_date,
+		relative_created_time: relative_created_time,
+		view_count: twitchClip.view_count
       }
-	}
+	  clips.push(clip)
+    })
+
+    this.setState({clips: clips, user: user})
   }
-  
-  getClipsCallback(getClipsResponse: any) {
-    const clipElems : JSX.Element[] = [];
-    const callback = this.getClip.bind(this, clipElems);
-  	$.each(getClipsResponse.data, callback)
-    ReactDOM.render(clipElems, this.clipsDiv);
-  }
-  getClip(clipElems: JSX.Element[], key: number, clip: ClipsType) {
-    const now = new Date();
-    const created_date = new Date(clip.created_at);
-    const seconds = Math.round((now.getTime() - created_date.getTime())/1000);
-    clip.relative_created_time = TimeHelper.getFuzzyDuration(seconds);
-    const clipDivElem: JSX.Element = ( 
-	  <div key={key} className="video">
-        <a href="void(0)" data-id={clip.id} onClick={this.props.clickListener}>
-          <img src={clip.thumbnail_url}/>
-        </a>
-        <div className="overlay bottomLeft">{clip.view_count} views</div>
-        <div className="overlay bottomRight">{clip.relative_created_time}</div> 
-      </div>);
-    clipElems.push(clipDivElem);
+
+  render() {	
+	const {isActive, clipClick} = this.props
+	const {clips} = this.state
+	const className = "tab" + (isActive ? " active" : "");
+
+	const clipList = !clips ? "" : clips.map((clip: AppClip) =>
+	    <div key={clip.id} className="clip">
+          <a href="void(0)" data-id={clip.id} onClick={clipClick}>
+            <img src={clip.thumbnail_url}/>
+          </a>
+          <div className="overlay bottomLeft">{clip.view_count} views</div>
+          <div className="overlay bottomRight">{clip.relative_created_time}</div> 
+        </div>
+      )
+
+    return (
+        <div id="clips" className={className}>
+          {clipList}
+       </div>
+    )
   }
 }
 
-export default ClipsTab;
+ClipsTab.prototype.state = {
+	clips: [],
+	user: null
+}
+
+export default ClipsTab

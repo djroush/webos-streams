@@ -1,31 +1,34 @@
 import React, { Component } from 'react';
 
-import './NavHeader.css';
+import '../css/NavHeader.css';
 
-class NavHeader extends Component {
-  props: NavHeaderProps;
-  state : NavHeaderState = {
-    active: false
-  }; 
+type NavHeaderState = {
+  isActive: boolean
+}
 
-  constructor(props:NavHeaderProps) {
-    super(props);
-    this.props = props;
-  }
+type NavHeaderProps = {
+	text: string
+	onClick: (event: React.MouseEvent<any, any>) => void;
+}
 
-  setState(state: NavHeaderState) {
-    super.setState(state);
-    this.state = state;	
-  } 
+class NavHeader extends Component<NavHeaderProps, NavHeaderState> {
 
   render() {
-	const className = "tabNav" + (this.state.active ? " active" : "");
-      return (
-        <li id={this.props.id}className={className}>
-		  <a onClick={this.props.clickListener}>{this.props.text}</a>
-       </li>
-      );
+	const {text, onClick} = this.props
+	const {isActive} = this.state
+	const className = "tabNav" + (isActive ? " active" : "");
+
+    return (
+      <li className={className}>
+        <a onClick={onClick}>{text}</a>
+      </li>
+    ); 
+
   }
+}
+
+NavHeader.prototype.state = {
+	isActive: false
 }
 
 export default NavHeader;

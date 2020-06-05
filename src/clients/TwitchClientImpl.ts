@@ -1,4 +1,4 @@
-import TwitchClient from './TwitchClient';
+import {TwitchClient} from './TwitchClientFactory';
 import { APP } from '../Config';
 
 import $ from 'jquery';

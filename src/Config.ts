@@ -1,6 +1,7 @@
 export let APP: AppModel;
 
 class Config {
+
   static setup() {
 	var com: any = com || {};
 	let github = com.github || {};
@@ -13,8 +14,6 @@ class Config {
 	  callbackUrl: encodeURIComponent('http://localhost'),
  	  mockTwitch: false	
 	};
-
-	APP.State = {};
 
 	//Check if an access token exist, otherwise redirect to twitch to get one
 	const matrixParams = document.location.href.split('#')[1]

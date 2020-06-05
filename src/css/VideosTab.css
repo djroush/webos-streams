@@ -1,0 +1,27 @@
+.video {
+	position: relative;
+	display: inline-block;
+	padding: 8px;
+}
+.overlay {
+	background-color: #000000;
+	margin: 8px;
+	padding: 2px;
+	opacity: 0.8; 
+	line-height: 9px;
+}
+.topLeft {
+  position: absolute;
+  top: 0px;
+  left: 8px;
+}
+.bottomLeft {
+  position: absolute;
+  bottom: 8px;
+  left: 8px;
+}
+.bottomRight {
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+}

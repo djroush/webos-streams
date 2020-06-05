@@ -1,14 +1,19 @@
-//Model
-type UserType = {
+//Twitch Client 
+type TwitchUserResponse = {
+    data: TwitchUser[]
+}
+type TwitchUser = {
 	id: string;
 	login: string;
 	display_name: string;
 	profile_image_url: string;
 	offline_image_url: string;
 	view_count: number;
+}	
+type TwitchVideosResponse = {
+    data: TwitchVideo[]
 }
-	
-type VideoType = {
+type TwitchVideo = {
 	id: string,
 	thumbnail_url: string,
 	published_at: string,
@@ -16,8 +21,10 @@ type VideoType = {
 	view_count: number
 	relative_published_time: string;
 }
-
-type ClipsType = {
+type TwitchClipsResponse = {
+    data: TwitchClip[]
+}
+type TwitchClip = {
 	id: string,
 	thumbnail_url: string,
 	created_at: string,
@@ -25,48 +32,34 @@ type ClipsType = {
 	relative_created_time: string;
 }
 
-	
-type StateType = {
-	User?: UserType;
+
+//Internal Model
+type AppVideo = {
+	id: string
+	thumbnail_url: string
+	published_date: Date
+	relative_published_time: string
+	view_count: number 
+	duration: string
 }
+type AppClip = {
+	id: string
+	thumbnail_url: string
+	created_date: Date
+	relative_created_time: string
+	view_count: number 
+}
+
 
 type AppModel = {
-	Component?: object,
-	State?: StateType,
-	Config?: { [key: string]: any }
+	Config?: AppConfig
 }
 
-//Components
-interface StreamTab {
-	props: TabProps;
-	playStream: (channel: string, withChat: boolean) => void;
-	playVideo: (videoid: number) => void;
+type AppConfig = {
+  twitchClientId: string
+  twitchEndpoint: string,
+  callbackUrl: string,
+  mockTwitch: boolean,
+  userAccessToken? : string
 }
-
-
-
-// State & Props
-type AppState = {
-	user?: UserType;
-	activeTab?: string;
-}
-
-type NavHeaderState = {
-  active: boolean
-}
-type TabState = {
-  active: boolean,
-  user: UserType | null
-}
-//Props
-type TabProps = {
-  clickListener: (event: React.MouseEvent<any, any>) => void;
-  parent?: any;
-}
-interface NavHeaderProps {
-  clickListener: (event: React.MouseEvent<any, any>) => void;
-  text: string;
-  id: string;
-}
-
 

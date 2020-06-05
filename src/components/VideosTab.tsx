@@ -1,73 +1,79 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-import './VideosTab.css';
+import '../css/VideosTab.css';
 
-import TwitchClient from '../clients/TwitchClient'
-import TwitchClientFactory from '../clients/TwitchClientFactory'
+import TwitchClientFactory, {TwitchClient} from '../clients/TwitchClientFactory'
 import TimeHelper from '../helper/TimeHelper'; 
 
-import $ from 'jquery';
-import ReactDOM from 'react-dom';
+type VideosTabProps = {
+  isActive: boolean
+  videoClick: (event: React.MouseEvent<any, any>) => void
+}
+type VideosTabState = {
+  videos? : AppVideo []
+  user?: TwitchUser
+}
 
-class VideosTab extends Component {
-  twitchClient: TwitchClient = TwitchClientFactory.getInstance();
-  videosDiv: HTMLDivElement;
+class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
+  twitchClient: TwitchClient = TwitchClientFactory.getInstance()
+  videos: AppVideo[] = null
 
-  state: TabState = {
-	active: false,
-	user: null
-  };
-  props: TabProps;  
-  constructor(props:any) {
-    super(props);
-    this.props = props;
+  setUser(user: TwitchUser) {
+    const callback = this.getVideosCallback.bind(this, user);
+	this.twitchClient.getVideos(user.id, callback);	
+  }
+
+  getVideosCallback(user: TwitchUser, getVideosResponse: TwitchVideosResponse) {
+	const twitchVideos: TwitchVideo[] = getVideosResponse.data
+	const videos: AppVideo[] = [];
+    twitchVideos.forEach(function(twitchVideo: TwitchVideo) {
+	    const now = new Date();
+	  	const thumbnail_url= twitchVideo.thumbnail_url.replace("%{width}", "304").replace("%{height}", "171");
+	  	const published_date = new Date(twitchVideo.published_at);
+	  	const seconds = Math.round((now.getTime() - published_date.getTime())/1000);
+	  	const relative_published_time = TimeHelper.getFuzzyDuration(seconds);
+	  	const duration = TimeHelper.formatDuration(twitchVideo.duration);
+
+		const video: AppVideo = {
+			id: twitchVideo.id,
+			thumbnail_url: thumbnail_url,
+			published_date: published_date,
+			relative_published_time: relative_published_time,
+			view_count: twitchVideo.view_count,
+			duration: duration
+		}
+		videos.push(video)
+    })
+    this.setState({videos: videos, user: user})
   }
 
   render() {	
-	const className = "tab" + (this.state.active ? " active" : "");
-    return (
-      <div id="videos" ref={(node) => { this.videosDiv = node;}} className={className}></div>
-    );
-  }
-
-  setState(state: TabState) {
-    super.setState(state);
-    this.state = state;
-  } 
-
-  //TODO: call the twitch client somewhere, maybe make this call when visible?
-   componentDidUpdate() {
-	const user = this.state.user;
-	if (user && user.id) {
-	  const callback = this.getVideosCallback.bind(this);
-	  this.twitchClient.getVideos(user.id, callback);	
-	}
-  }
-
-  getVideosCallback(getClipsResponse: any) {
-    const videoElems : JSX.Element[] = [];
-    const callback = this.getVideo.bind(this, videoElems);
-  	$.each(getClipsResponse.data, callback)
-    ReactDOM.render(videoElems, this.videosDiv);
-  }
-  getVideo(videoElems: JSX.Element[], key: number, video: VideoType) {
-    const now = new Date();
-  	const thumb_url= video.thumbnail_url.replace("%{width}", "304").replace("%{height}", "171");
-  	const published_date = new Date(video.published_at);
-  	const seconds = Math.round((now.getTime() - published_date.getTime())/1000);
-  	video.relative_published_time = TimeHelper.getFuzzyDuration(seconds);
-  	const duration = TimeHelper.formatDuration(video.duration);
-    const videoDivElem: JSX.Element = ( 
-	  <div key={key} className="video">
-        <a href="void(0)" data-id={video.id} onClick={this.props.clickListener}>
-          <img src={thumb_url}/>
+	const {isActive, videoClick} = this.props
+	const {videos} = this.state
+	const className = "tab" + (isActive ? " active" : "");
+	
+    const videoList = !videos ? "" : videos.map((video: AppVideo) => 
+	  <div key={video.id} className="video">
+        <a href="void(0)" data-id={video.id} onClick={videoClick}>
+          <img src={video.thumbnail_url}/>
         </a>
-        <div className="overlay topLeft">{duration}</div>
+        <div className="overlay topLeft">{video.duration}</div>
         <div className="overlay bottomLeft">{video.view_count} views</div>
         <div className="overlay bottomRight">{video.relative_published_time}</div> 
-      </div>);
-    videoElems.push(videoDivElem);
+      </div>
+    );
+
+  return (
+      <div id="videos" className={className}>
+        {videoList}
+     </div>
+    );
   }
 }
 
-export default VideosTab;
+VideosTab.prototype.state = {
+	videos: null,
+	user: null
+}
+
+export default VideosTab
