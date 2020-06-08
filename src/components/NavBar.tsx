@@ -42,7 +42,7 @@ class NavBar extends React.Component<NavBarProps, AppState> {
     if (user) {
 	  return (
       <div id="channelNavBar">
-		<div id="profile" data-id={user.id}>
+		<div id="profile" key={user.id}>
           <img className="profileImage" src={user.profile_image_url}></img>
           <span>{user.display_name}</span>
         </div>

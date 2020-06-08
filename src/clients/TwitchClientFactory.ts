@@ -1,22 +1,16 @@
-import { APP } from '../Config';
-
+import * as Twitch from './TwitchClient'
 import TwitchClientMock from './TwitchClientMock';
 import TwitchClientImpl from './TwitchClientImpl';
-
-export interface TwitchClient {
-	getUser(username: string, callback: (response: any) => void): void;
-    getStream(userid: string, callback: (response: any) => void): void;
-	getVideos(userid: string, callback: (response: any) => void): void;
-	getClips( userid: string, callback: (response: any) => void): void;
-}
+import CONFIG from '../index'
 
 class TwitchClientFactory {
-  static getInstance(): TwitchClient {
-     if (APP.Config.mockTwitch) {
+  static getInstance(): Twitch.Client {
+     if (CONFIG.mockTwitch) {
        return new TwitchClientMock();
      } else {
        return new TwitchClientImpl(); 
      }
   }
 }
-export default TwitchClientFactory;
+
+export default TwitchClientFactory

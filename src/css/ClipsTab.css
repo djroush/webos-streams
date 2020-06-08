@@ -1,21 +1,29 @@
 .clip {
   display: inline-block;
-  min-width: 308px;
-  width: 15%;	
+  position: relative;
+  padding: 0.5%;
+  width: 20%;
+  min-width: 16%;
+  
 }
-.overlay {
+
+.clip img {
+    max-width: 100%;
+  }
+
+.clip .overlay {
 	background-color: #000000;
 	margin: 8px;
 	padding: 2px;
 	opacity: 0.8; 
 	line-height: 9px;
 }
-.bottomLeft {
+.cip .bottomLeft {
   position: absolute;
   bottom: 8px;
   left: 8px;
 }
-.bottomRight {
+.clip .bottomRight {
   position: absolute;
   bottom: 8px;
   right: 8px;

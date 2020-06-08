@@ -1,15 +1,11 @@
-import TwitchClient from './TwitchClient';
+import * as Twitch from './TwitchClient';
 
-class TwitchClientMock implements TwitchClient {
 
-    public getUser(username: string, callback: (response: any) => void) {
+class TwitchClientMock implements Twitch.Client {
+
+    public getUser(username: string, callback: (response: Twitch.UserResponse) => void) {
         console.log('Returning mock user response for username: ' + username);
         callback(this.getUserResponse);
-    }
-
-    public getStream(userid: string, callback: (response: any) => void) {
-        console.log('Returning mock stream response for userid: ' + userid);
-        callback(this.getStreamResponse);
     }
 	public getVideos(userid: string, callback: (response: any) => void) {
         console.log('Returning mock videos response for userid: ' + userid);
@@ -21,7 +17,7 @@ class TwitchClientMock implements TwitchClient {
     }
 
 
-    getUserResponse = {
+    getUserResponse: Twitch.UserResponse = {
         "data": [{
             "id": "115782911",
             "login": "kipp",
@@ -35,27 +31,7 @@ class TwitchClientMock implements TwitchClient {
         }]
     };
 
-
-    getStreamResponse = {
-        "data": [{
-            "id": "37160704848",
-            "user_id": "137176010",
-            "user_name": "ShinyZeni",
-            "game_id": "7595",
-            "type": "live",
-            "title": "[100%] Grind for 1:14 | Current PB: 1:15:00 (2nd Place) | I'm Blue",
-            "viewer_count": 167,
-            "started_at": "2020-03-16T02:34:01Z",
-            "language": "en",
-            "thumbnail_url": "https://static-cdn.jtvnw.net/previews-ttv/live_user_shinyzeni-{width}x{height}.jpg",
-            "tag_ids": ["6ea6bca4-4712-4ab9-a906-e3336a9d8039"]
-        }],
-        "pagination": {
-            "cursor": "IA"
-        }
-    };
-
-    getVideosResponse = {
+    getVideosResponse: Twitch.VideosResponse = {
         "data": [{
             "id": "567351432",
             "user_id": "115782911",

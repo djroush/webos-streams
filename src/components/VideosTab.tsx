@@ -2,7 +2,8 @@ import React from 'react';
 
 import '../css/VideosTab.css';
 
-import TwitchClientFactory, {TwitchClient} from '../clients/TwitchClientFactory'
+import * as Twitch from '../clients/TwitchClient'
+import TwitchClientFactory from '../clients/TwitchClientFactory'
 import TimeHelper from '../helper/TimeHelper'; 
 
 type VideosTabProps = {
@@ -11,19 +12,19 @@ type VideosTabProps = {
 }
 type VideosTabState = {
   videos? : AppVideo []
-  user?: TwitchUser
+  user?: AppUser
 }
 
 class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
   twitchClient: TwitchClient = TwitchClientFactory.getInstance()
   videos: AppVideo[] = null
 
-  setUser(user: TwitchUser) {
+  setUser(user: AppUser) {
     const callback = this.getVideosCallback.bind(this, user);
 	this.twitchClient.getVideos(user.id, callback);	
   }
 
-  getVideosCallback(user: TwitchUser, getVideosResponse: TwitchVideosResponse) {
+  getVideosCallback(user: Twitch.User, getVideosResponse: Twitch.VideosResponse) {
 	const twitchVideos: TwitchVideo[] = getVideosResponse.data
 	const videos: AppVideo[] = [];
     twitchVideos.forEach(function(twitchVideo: TwitchVideo) {
@@ -53,10 +54,8 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 	const className = "tab" + (isActive ? " active" : "");
 	
     const videoList = !videos ? "" : videos.map((video: AppVideo) => 
-	  <div key={video.id} className="video">
-        <a href="void(0)" data-id={video.id} onClick={videoClick}>
+	  <div key={video.id} className="video" onClick={videoClick}>
           <img src={video.thumbnail_url}/>
-        </a>
         <div className="overlay topLeft">{video.duration}</div>
         <div className="overlay bottomLeft">{video.view_count} views</div>
         <div className="overlay bottomRight">{video.relative_published_time}</div> 

@@ -1,34 +1,33 @@
 import React from 'react';
 
-import TwitchClientFactory, {TwitchClient} from '../clients/TwitchClientFactory'
+//These two conflict and the first one can't change names'
+declare var Twitch: any
+import * as Twitch1 from '../clients/TwitchClient'
+
+import TwitchClientFactory from '../clients/TwitchClientFactory'
 import SearchBar from '../components/SearchBar'
 import NavBar from '../components/NavBar'
 import TabsContainer from '../components/TabsContainer'
 
-
-//To make typescript happy
-declare var Twitch: any;
-
-export type AppState = {
+type AppState = {
   activeTab?: string;
-  user?: TwitchUser;
+  user?: AppUser;
 }
 
 class App extends React.Component<{}, AppState> {
-  //This relies on Config.setup() so it can't be instantiated earlier
-  twitchClient: TwitchClient = TwitchClientFactory.getInstance()
+  twitchClient: Twitch1.Client = TwitchClientFactory.getInstance()
 
   searchBar: SearchBar;
   navBar: NavBar;
   tabsContainer: TabsContainer;
- 
+  
   //Listeners
   videoClickListener = (event: React.MouseEvent<any, any>): void => {
-    const clipid: number = parseInt(event.currentTarget.getAttribute("data-id"));
+    const videoid: number = parseInt(event.currentTarget.getAttribute("key"));
 	this.setState({ 
 		user: this.state.user, activeTab: 'stream'
 	});
-    this.playVideo(clipid);    	
+    this.playVideo(videoid);    	
   };
 
   clickNavHeader = (event:React.MouseEvent): void => {
@@ -46,9 +45,18 @@ class App extends React.Component<{}, AppState> {
     this.twitchClient.getUser(channel, callback);
   };
 
-  getUserCallback = (response: TwitchUserResponse): void => {
+  getUserCallback = (response: Twitch1.UserResponse): void => {
     if (response && response.data.length == 1) {
-        const user: TwitchUser = response.data[0];
+        const twitchUser: Twitch1.User = response.data[0];
+		
+		const {id, login, profile_image_url, display_name} = twitchUser
+		const user: AppUser = {
+			id: id,
+			login: login,
+			profile_image_url: profile_image_url,
+			display_name: display_name
+		}
+
         this.setState({
 		  user: user, activeTab: 'stream'
 	    })
@@ -57,13 +65,7 @@ class App extends React.Component<{}, AppState> {
     }
   }
 
-  getVideosCallback = (event: React.MouseEvent): void => {
-	const videoid: number = parseInt(event.currentTarget.getAttribute("data-id"));
-	this.setState({ 
-		user: this.state.user, activeTab: 'stream'
-	});
-	this.playVideo(videoid);
-  }
+
 
   setState(state: AppState) {
 	super.setState(state)

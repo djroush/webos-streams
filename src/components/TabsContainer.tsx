@@ -12,7 +12,7 @@ type TabsContainerProps = {
 }
 type TabsContainerState = {
 	activeTab?: string,
-	user?: TwitchUser
+	user?: AppUser
 }
 
 class TabsContainer extends React.Component<TabsContainerProps, TabsContainerState> {
@@ -24,15 +24,13 @@ class TabsContainer extends React.Component<TabsContainerProps, TabsContainerSta
     const oldUser = this.state.user && this.state.user.login
 	const newUser = state.user && state.user.login
     const isUserUpdated = newUser !== null && newUser !== oldUser
-    const oldActiveTab = this.state.activeTab
-    const newActiveTab = state.activeTab
-    const isActiveTabUpdated = oldActiveTab === newActiveTab
+    const {activeTab} = state
    
 	
     super.setState(state)
 
-    if (isActiveTabUpdated) {
-	  //TODO: do i need this?
+    if (activeTab !== 'stream') {
+	  this.streamTab.removePlayer()
     }
 
     if (isUserUpdated) {

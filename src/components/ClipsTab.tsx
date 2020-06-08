@@ -2,7 +2,8 @@ import React from 'react';
 
 import '../css/ClipsTab.css';
 
-import TwitchClientFactory, {TwitchClient} from '../clients/TwitchClientFactory';
+import * as Twitch from '../clients/TwitchClient'
+import TwitchClientFactory from '../clients/TwitchClientFactory';
 import TimeHelper from '../helper/TimeHelper'; 
 
 type ClipsTabProps = {
@@ -11,25 +12,21 @@ type ClipsTabProps = {
 }
 type ClipsTabState = {
 	clips?: AppClip[],
-	user?: TwitchUser
+	user?: AppUser
 }
 
 class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
-  twitchClient: TwitchClient = TwitchClientFactory.getInstance();
+  twitchClient: Twitch.Client = TwitchClientFactory.getInstance();
 
-  setUser(user: TwitchUser) {
+  setUser(user: Twitch.User) {
 	const callback = this.getClipsCallback.bind(this, user);
      this.twitchClient.getClips(user.id, callback);
   }
 
-  shouldComponentUpdate(_nextProps: ClipsTabProps, nextState: ClipsTabState) {
-    return 	nextState.clips !== null
-  }
-
-  getClipsCallback(user: TwitchUser, getClipsResponse: TwitchClipsResponse) {
-	const twitchClips: TwitchClip[] = getClipsResponse.data
+  getClipsCallback(user: Twitch.User, getClipsResponse: Twitch.ClipsResponse) {
+	const twitchClips: Twitch.Clip[] = getClipsResponse.data
     const clips: AppClip[] = []
-    twitchClips.forEach(function(twitchClip: TwitchClip) {
+    twitchClips.forEach(function(twitchClip: Twitch.Clip) {
 	  const now = new Date();
 	  const created_date = new Date(twitchClip.created_at);
 	  const seconds = Math.round((now.getTime() - created_date.getTime())/1000);
@@ -54,14 +51,12 @@ class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
 	const className = "tab" + (isActive ? " active" : "");
 
 	const clipList = !clips ? "" : clips.map((clip: AppClip) =>
-	    <div key={clip.id} className="clip">
-          <a href="void(0)" data-id={clip.id} onClick={clipClick}>
-            <img src={clip.thumbnail_url}/>
-          </a>
-          <div className="overlay bottomLeft">{clip.view_count} views</div>
-          <div className="overlay bottomRight">{clip.relative_created_time}</div> 
-        </div>
-      )
+      <a key={clip.id} className="clip" onClick={clipClick}>
+        <img src={clip.thumbnail_url}/>
+        <div className="overlay bottomLeft">{clip.view_count} views</div>
+        <div className="overlay bottomRight">{clip.relative_created_time}</div> 
+      </a>
+    )
 
     return (
         <div id="clips" className={className}>

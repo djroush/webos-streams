@@ -1,7 +1,7 @@
 .video {
-	position: relative;
-	display: inline-block;
-	padding: 8px;
+  position: relative;
+  display: inline-block;
+  padding: 8px;
 }
 .overlay {
 	background-color: #000000;
