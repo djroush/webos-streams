@@ -9,12 +9,14 @@ type ConfigProps = {
   callbackUrl: string,
   mockTwitch: boolean,
   userAccessToken? : string
+  hostName?: string
 }
 
 var CONFIG : ConfigProps = {
   twitchClientId: "wt3vscgu64y9f9tmew8ay17xdl3azt",
   twitchEndpoint: "https://api.twitch.tv/helix",
   callbackUrl: encodeURIComponent('http://localhost'),
+  hostName: window.location.hostname
   mockTwitch: false	
 };
 
@@ -34,6 +36,8 @@ if (CONFIG.userAccessToken === null || CONFIG.userAccessToken === undefined) {
 	&redirect_uri=' + CONFIG.callbackUrl + '\
 	&response_type=token&scope=';
 }  
+
+
 
 
 ReactDOM.render(<App />, document.getElementById('root'));

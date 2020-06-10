@@ -5,7 +5,7 @@ import $ from 'jquery'
 import '../css/SearchBar.css'
 
 type SearchBarProps = {
-	loadChannel: (channel: string) => void
+	loadUser: () => (channel: string) => void
 }
 
 class SearchBar extends React.Component<SearchBarProps, {}> {
@@ -19,9 +19,9 @@ class SearchBar extends React.Component<SearchBarProps, {}> {
   buttonClick() {
     const input = $("#channelInput")
     const channel: string = input.val().toString();
-    const {loadChannel} = this.props
+    const {loadUser} = this.props
     if (channel && channel !== "") {
-      loadChannel(channel)
+      loadUser(channel)
     }  
   }
 

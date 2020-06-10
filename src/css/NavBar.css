@@ -3,6 +3,12 @@
 	background-color: #323232;
 }
 
+#channelNavBar.hidden {
+  display: none;
+  height: 0;
+  visibility: hidden;
+}
+
 #channelNavBar span {
 	height: 40px;
 }

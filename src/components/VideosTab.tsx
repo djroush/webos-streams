@@ -12,19 +12,17 @@ type VideosTabProps = {
 }
 type VideosTabState = {
   videos? : AppVideo []
-  user?: AppUser
 }
 
 class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
   twitchClient: TwitchClient = TwitchClientFactory.getInstance()
-  videos: AppVideo[] = null
 
-  setUser(user: AppUser) {
-    const callback = this.getVideosCallback.bind(this, user);
+  loadVideos(user: AppUser) {
+    const callback = this.getVideosCallback.bind(this);
 	this.twitchClient.getVideos(user.id, callback);	
   }
 
-  getVideosCallback(user: Twitch.User, getVideosResponse: Twitch.VideosResponse) {
+  getVideosCallback(getVideosResponse: Twitch.VideosResponse) {
 	const twitchVideos: TwitchVideo[] = getVideosResponse.data
 	const videos: AppVideo[] = [];
     twitchVideos.forEach(function(twitchVideo: TwitchVideo) {
@@ -45,7 +43,7 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 		}
 		videos.push(video)
     })
-    this.setState({videos: videos, user: user})
+    this.setState({videos: videos})
   }
 
   render() {	
@@ -54,12 +52,12 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 	const className = "tab" + (isActive ? " active" : "");
 	
     const videoList = !videos ? "" : videos.map((video: AppVideo) => 
-	  <div key={video.id} className="video" onClick={videoClick}>
+	  <a data-id={video.id} key={video.id} className="video" onClick={videoClick}>
           <img src={video.thumbnail_url}/>
         <div className="overlay topLeft">{video.duration}</div>
         <div className="overlay bottomLeft">{video.view_count} views</div>
         <div className="overlay bottomRight">{video.relative_published_time}</div> 
-      </div>
+      </a>
     );
 
   return (
@@ -71,8 +69,7 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 }
 
 VideosTab.prototype.state = {
-	videos: null,
-	user: null
+	videos: null
 }
 
 export default VideosTab

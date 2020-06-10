@@ -3,27 +3,29 @@ import React from 'react';
 import '../css/ClipsTab.css';
 
 import * as Twitch from '../clients/TwitchClient'
-import TwitchClientFactory from '../clients/TwitchClientFactory';
-import TimeHelper from '../helper/TimeHelper'; 
+import TwitchClientFactory from '../clients/TwitchClientFactory'
+import ClipsPlayer from '../components/ClipsPlayer'
+import TimeHelper from '../helper/TimeHelper'
 
 type ClipsTabProps = {
-	isActive: boolean,
-	clipClick: (event: React.MouseEvent<any, any>) => void
+	isActive: boolean
+
 }
 type ClipsTabState = {
-	clips?: AppClip[],
-	user?: AppUser
+	clips: AppClip[],
+	clipid: string
 }
 
 class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
   twitchClient: Twitch.Client = TwitchClientFactory.getInstance();
 
-  setUser(user: Twitch.User) {
-	const callback = this.getClipsCallback.bind(this, user);
+  loadClips(user: string) {
+	const callback = this.getClipsCallback.bind(this);
      this.twitchClient.getClips(user.id, callback);
   }
 
-  getClipsCallback(user: Twitch.User, getClipsResponse: Twitch.ClipsResponse) {
+
+  getClipsCallback(getClipsResponse: Twitch.ClipsResponse) {
 	const twitchClips: Twitch.Clip[] = getClipsResponse.data
     const clips: AppClip[] = []
     twitchClips.forEach(function(twitchClip: Twitch.Clip) {
@@ -42,33 +44,66 @@ class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
 	  clips.push(clip)
     })
 
-    this.setState({clips: clips, user: user})
+    this.setState({clips: clips, clipid: null})
+  }
+
+ clipClick = (event: React.MouseEvent<any, any>): void => {
+	const {clips} = this.state;
+	const clipid = event.currentTarget.getAttribute("data-id")
+	
+	this.setState({ clips: clips, clipid: clipid })
+  };
+
+  onKeyPress = (event: React.KeyboardEvent) : void => {
+    if (event.key === 'Escape') {
+      this.removePlayer()
+    }	
+  }
+
+  removePlayer() {
+    const {clips} = this.state
+    this.setState({clips: clips, clipid: null})
   }
 
   render() {	
-	const {isActive, clipClick} = this.props
-	const {clips} = this.state
-	const className = "tab" + (isActive ? " active" : "");
+	const {clips, clipid} = this.state
+	const clipClick = this.clipClick
+	const {isActive} = this.props
 
-	const clipList = !clips ? "" : clips.map((clip: AppClip) =>
-      <a key={clip.id} className="clip" onClick={clipClick}>
-        <img src={clip.thumbnail_url}/>
-        <div className="overlay bottomLeft">{clip.view_count} views</div>
-        <div className="overlay bottomRight">{clip.relative_created_time}</div> 
-      </a>
-    )
-
-    return (
-        <div id="clips" className={className}>
-          {clipList}
+    if (!isActive) {
+	  return (<div id="clips"/>)
+    } else if (clipid !== null) {
+	  const removePlayer = this.removePlayer.bind(this)
+	  const onKeyPress = this.onKeyPress.bind(this)
+	  return (
+        <div id="clips">
+          <ClipsPlayer clipid={clipid} removePlayer={removePlayer} onKeyPress={onKeyPress}/>
        </div>
-    )
+      )
+    } else {
+	  const className = "tab" + (isActive ? " active" : "");
+      const clipList = !clips ? "" : clips.map((clip: AppClip) =>
+        <a data-id={clip.id} key={clip.id} className="clip" onClick={clipClick}>
+          <img src={clip.thumbnail_url}/>
+          <div className="overlay bottomLeft">{clip.view_count} views</div>
+          <div className="overlay bottomRight">{clip.relative_created_time}</div> 
+        </a>
+      )
+
+	  return (
+        <div id="clips">
+          <div> 
+            {clipList}
+          </div>
+       </div>
+      )
+    }
   }
 }
 
 ClipsTab.prototype.state = {
 	clips: [],
-	user: null
+	clipid: null
 }
 
 export default ClipsTab

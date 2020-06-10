@@ -1,6 +1,6 @@
-import React from 'react';
+import React from 'react'
 
-import '../css/StreamTab.css';
+import '../css/StreamTab.css'
 
 import $ from 'jquery'
 
@@ -8,12 +8,18 @@ type StreamTabProps = {
 	isActive: boolean
 }
 
+//TODO: Make this a videos player and put in in VideosTab and keep nav with Stream Videos Player, if stream not online,
+// go to Videos by default? 
 class StreamTab extends React.Component<StreamTabProps, {}> {
+
+  shouldComponentUpdate(nextProps: StreamTabProps, _nextState: any) {
+	const {isActive} = this.props
+	return (isActive !== nextProps.isActive)
+  }
 
   removePlayer() {
 	$('#twitch-embed').empty();
   }
-
   render() {
 	const {isActive} = this.props
     const className = "tab" + (isActive ? " active" : "");

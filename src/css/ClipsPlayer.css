@@ -1,0 +1,22 @@
+#clipPlayer {
+    display: none;
+    max-height: 0;
+	visibility: none
+}
+
+.playerOverlay {
+  width: 100vw;
+  height: 100vh;
+  z-index: 10;
+  margin: 0;
+  padding: 0;
+  position: fixed;
+  top: 0;
+  bottom: 0;
+}
+
+#clipPlayer.active {
+    display: block;
+    max-height: inherit;
+	visibility: visible;
+}

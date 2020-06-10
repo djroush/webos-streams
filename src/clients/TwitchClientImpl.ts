@@ -5,19 +5,22 @@ import $ from 'jquery';
 
 class TwitchClientImpl implements Twitch.Client {
 
-  private setRequestHeaders(xhr: JQuery.jqXHR<any>) {
+  const baseRequest = {
+    type: 'GET',
+    dataType: 'json',
+    beforeSend: function (xhr: JQuery.jqXHR<any>) {
 	  xhr.setRequestHeader('Client-ID', CONFIG.twitchClientId);
 	  xhr.setRequestHeader('Authorization', 'Bearer ' + CONFIG.userAccessToken);
-  };
+    }
+  }
 
   public getUser(username: string, callback: (response: Twitch.UserResponse) => void) {
     console.log("Loading user: " + username);
     
     const url =  CONFIG.twitchEndpoint + '/users?login=' + username; 
     const request = {
-      type: 'GET',
-      dataType: 'json',
-      beforeSend: this.setRequestHeaders,
+	  ...this.baseRequest,
+
       success: callback,
       error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup user ' + username + '.  Received ' + textStatus + ' status code.\r\n' +
@@ -33,9 +36,8 @@ class TwitchClientImpl implements Twitch.Client {
 
     const url: string = CONFIG.twitchEndpoint + '/videos?user_id=' + userid + '&sort=time&first=20'
     const request = {
-        type: 'GET',
-        dataType: 'json',
-        beforeSend: this.setRequestHeaders,
+		...this.baseRequest,
+		
         success: callback,
         error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup videos for userid ' + userid + '.  Received ' + textStatus + ' status code.\r\n' +
@@ -54,10 +56,10 @@ class TwitchClientImpl implements Twitch.Client {
     const afterTime = new Date().toISOString();
 
     const url: string = CONFIG.twitchEndpoint + '/clips?broadcaster_id=' + userid + '&started_at=' + beforeTime + '&ended_at=' + afterTime + '&first=20'
+    
     const request = {
-        type: 'GET',
-        dataType: 'json',
-        beforeSend: this.setRequestHeaders,
+	    ...this.baseRequest,
+
         success: callback,
         error: function(_jqXHR: JQuery.jqXHR<any>, textStatus: string, errorThrown: string) {
           console.error('Unable to lookup clips for userid ' + userid + '.  Received ' + textStatus + ' status code.\r\n' +
