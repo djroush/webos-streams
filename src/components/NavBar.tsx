@@ -2,8 +2,8 @@ import React from 'react';
 
 import '../css/NavBar.css'
 
-import {AppState} from '../components/App'
 import NavHeader from '../components/NavHeader'
+import type {AppState} from '../components/App'
 
 type NavBarProps = {
 	headerClick: () => (event: React.MouseEvent<any, any>) => void;
@@ -19,11 +19,13 @@ class NavBar extends React.Component<NavBarProps, AppState> {
     const isClipsActive = activeTab === 'clips'
 
     const className = user === null ? "hidden": ""
-    const innerHTML = user === null ? "" : 
-    	<div id="profile" key={user.id}>
+    const userProfileDiv = user === null ? "" : (
+      <div id="profile" key={user.id}>
         <img className="profileImage" src={user.profile_image_url}></img>
         <span>{user.display_name}</span>
       </div>
+    )
+    const navHeaderDiv = user === null ? "" : 
       <div>
         <ul>  
           <NavHeader isActive={isStreamActive} text="Stream" onClick={headerClick}/>
@@ -31,11 +33,11 @@ class NavBar extends React.Component<NavBarProps, AppState> {
           <NavHeader isActive={isClipsActive} text="Clips" onClick={headerClick}/>
         </ul>
       </div>
- 
 
     return (
       <div id="channelNavBar" className={className}>
-        {innerHTML}
+        {userProfileDiv}
+        {navHeaderDiv}
       </div>	
     )	
   }
@@ -43,7 +45,8 @@ class NavBar extends React.Component<NavBarProps, AppState> {
 
 NavBar.prototype.state = {
 	activeTab: null,
-	user: null
+	user: null,
+	videoid: null
 }
 
 export default NavBar;

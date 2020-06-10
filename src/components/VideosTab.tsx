@@ -15,7 +15,7 @@ type VideosTabState = {
 }
 
 class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
-  twitchClient: TwitchClient = TwitchClientFactory.getInstance()
+  twitchClient: Twitch.Client = TwitchClientFactory.getInstance()
 
   loadVideos(user: AppUser) {
     const callback = this.getVideosCallback.bind(this);
@@ -23,9 +23,9 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
   }
 
   getVideosCallback(getVideosResponse: Twitch.VideosResponse) {
-	const twitchVideos: TwitchVideo[] = getVideosResponse.data
+	const twitchVideos: Twitch.Video[] = getVideosResponse.data
 	const videos: AppVideo[] = [];
-    twitchVideos.forEach(function(twitchVideo: TwitchVideo) {
+    twitchVideos.forEach(function(twitchVideo: Twitch.Video) {
 	    const now = new Date();
 	  	const thumbnail_url= twitchVideo.thumbnail_url.replace("%{width}", "304").replace("%{height}", "171");
 	  	const published_date = new Date(twitchVideo.published_at);

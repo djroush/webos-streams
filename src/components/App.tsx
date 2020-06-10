@@ -7,9 +7,10 @@ import SearchBar from '../components/SearchBar'
 import NavBar from '../components/NavBar'
 import TabsContainer from '../components/TabsContainer'
 
-type AppState = {
+export type AppState = {
   activeTab?: string;
   user?: AppUser;
+  videoid: number
 }
 
 class App extends React.Component<{}, AppState> {
@@ -74,7 +75,6 @@ class App extends React.Component<{}, AppState> {
 
 
   render() {
-	const user = this.state.user
 	const loadUser = this.loadUser.bind(this)
 	const videoClick = this.videoClick.bind(this)
 	const headerClick = this.clickNavHeader.bind(this)

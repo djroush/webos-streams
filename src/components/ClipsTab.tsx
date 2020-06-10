@@ -19,7 +19,7 @@ type ClipsTabState = {
 class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
   twitchClient: Twitch.Client = TwitchClientFactory.getInstance();
 
-  loadClips(user: string) {
+  loadClips(user: AppUser) {
 	const callback = this.getClipsCallback.bind(this);
      this.twitchClient.getClips(user.id, callback);
   }
@@ -81,7 +81,6 @@ class ClipsTab extends React.Component<ClipsTabProps, ClipsTabState> {
        </div>
       )
     } else {
-	  const className = "tab" + (isActive ? " active" : "");
       const clipList = !clips ? "" : clips.map((clip: AppClip) =>
         <a data-id={clip.id} key={clip.id} className="clip" onClick={clipClick}>
           <img src={clip.thumbnail_url}/>

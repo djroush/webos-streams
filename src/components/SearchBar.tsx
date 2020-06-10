@@ -5,7 +5,7 @@ import $ from 'jquery'
 import '../css/SearchBar.css'
 
 type SearchBarProps = {
-	loadUser: () => (channel: string) => void
+	loadUser: (channel: string) => void
 }
 
 class SearchBar extends React.Component<SearchBarProps, {}> {

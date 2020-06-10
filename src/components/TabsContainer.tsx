@@ -19,7 +19,7 @@ type TabsContainerState = {
 	videoid: number
 }
 
-class TabsContainer extends React.Component<{}, TabsContainerState> {
+class TabsContainer extends React.Component<TabsContainerProps, TabsContainerState> {
   streamTab: StreamTab
   videosTab: VideosTab
   clipsTab:  ClipsTab

@@ -5,7 +5,7 @@ import $ from 'jquery';
 
 class TwitchClientImpl implements Twitch.Client {
 
-  const baseRequest = {
+  baseRequest = {
     type: 'GET',
     dataType: 'json',
     beforeSend: function (xhr: JQuery.jqXHR<any>) {
