@@ -1,0 +1,67 @@
+yarn run v1.22.4
+$ node ./node_modules/eslint/bin/eslint . --ext .jsx,.js,.ts,.tsx --fix
+
+/Users/dougr/git_code/webos-streams/src/components/App.tsx
+  40:13  error  Unused state field: 'activeTab'                                    react/no-unused-state
+  51:15  error  Unused state field: 'activeTab'                                    react/no-unused-state
+  66:20  error  Identifier 'profile_image_url' is not in camel case                camelcase
+  66:39  error  Identifier 'display_name' is not in camel case                     camelcase
+  76:15  error  Unused state field: 'activeTab'                                    react/no-unused-state
+  88:7   error  JSX not allowed in files with extension '.tsx'                     react/jsx-filename-extension
+  90:65  error  JSX props should not use .bind()                                   react/jsx-no-bind
+  91:59  error  JSX props should not use .bind()                                   react/jsx-no-bind
+  93:71  error  JSX props should not use .bind()                                   react/jsx-no-bind
+
+/Users/dougr/git_code/webos-streams/src/components/ClipsPlayer.tsx
+   4:20  error  Unable to resolve path to module '../index'                                                     import/no-unresolved
+   4:20  error  Missing file extension for "../index"                                                           import/extensions
+  23:7   error  Visible, non-interactive elements with click handlers must have at least one keyboard listener  jsx-a11y/click-events-have-key-events
+  23:7   error  Static HTML elements with event handlers require a role                                         jsx-a11y/no-static-element-interactions
+  23:7   error  JSX not allowed in files with extension '.tsx'                                                  react/jsx-filename-extension
+  24:9   error  <iframe> elements must have a unique title property                                             jsx-a11y/iframe-has-title
+
+/Users/dougr/git_code/webos-streams/src/components/ClipsTab.tsx
+  22:3   error  loadClips should be placed after onKeyPress                                                                                                                                                                   react/sort-comp
+  82:40  error  JSX props should not use .bind()                                                                                                                                                                              react/jsx-no-bind
+  82:68  error  JSX props should not use .bind()                                                                                                                                                                              react/jsx-no-bind
+  87:7   error  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                                jsx-a11y/click-events-have-key-events
+  87:7   error  Static HTML elements with event handlers require a role                                                                                                                                                       jsx-a11y/no-static-element-interactions
+  87:7   error  Anchor used as a button. Anchors are primarily expected to navigate. Use the button element instead. Learn more: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  88:9   error  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                     jsx-a11y/alt-text
+
+/Users/dougr/git_code/webos-streams/src/components/NavBar.tsx
+  23:9   error  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images  jsx-a11y/alt-text
+
+/Users/dougr/git_code/webos-streams/src/components/NavHeader.tsx
+  18:9  error  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                                jsx-a11y/click-events-have-key-events
+  18:9  error  Static HTML elements with event handlers require a role                                                                                                                                                       jsx-a11y/no-static-element-interactions
+  18:9  error  Anchor used as a button. Anchors are primarily expected to navigate. Use the button element instead. Learn more: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+
+/Users/dougr/git_code/webos-streams/src/components/SearchBar.tsx
+  34:9  error  Missing an explicit type attribute for button   react/button-has-type
+
+/Users/dougr/git_code/webos-streams/src/components/StreamTab.tsx
+  11:1   error  This line has a length of 120. Maximum allowed is 100      max-len
+  19:15  error  Expected 'this' to be used by class method 'removePlayer'  class-methods-use-this
+
+/Users/dougr/git_code/webos-streams/src/components/TabsContainer.tsx
+  33:21  error  Must use destructuring state assignment                     react/destructuring-assignment
+  33:40  error  Must use destructuring state assignment                     react/destructuring-assignment
+  35:20  error  Must use destructuring state assignment                     react/destructuring-assignment
+  92:9   error  JSX not allowed in files with extension '.tsx'              react/jsx-filename-extension
+
+/Users/dougr/git_code/webos-streams/src/components/VideosTab.tsx
+  21:3   error  loadVideos should be placed after getVideosCallback                                                                                                                                                           react/sort-comp
+  57:14  error  JSX not allowed in files with extension '.tsx'                                                                                                                                                                react/jsx-filename-extension
+  61:7   error  Visible, non-interactive elements with click handlers must have at least one keyboard listener                                                                                                                jsx-a11y/click-events-have-key-events
+  61:7   error  Static HTML elements with event handlers require a role                                                                                                                                                       jsx-a11y/no-static-element-interactions
+  61:7   error  Anchor used as a button. Anchors are primarily expected to navigate. Use the button element instead. Learn more: https://github.com/evcohen/eslint-plugin-jsx-a11y/blob/master/docs/rules/anchor-is-valid.md  jsx-a11y/anchor-is-valid
+  62:9   error  img elements must have an alt prop, either with meaningful text, or an empty string for decorative images                                                                                                     jsx-a11y/alt-text
+
+/Users/dougr/git_code/webos-streams/src/index.tsx
+  30:5   error  Use array destructuring                              prefer-destructuring
+  41:17  error  JSX not allowed in files with extension '.tsx'       react/jsx-filename-extension
+
+✖ 86 problems (86 errors, 0 warnings)
+
+info Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.

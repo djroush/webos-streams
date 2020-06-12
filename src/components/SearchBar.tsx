@@ -1,40 +1,46 @@
 import React from 'react';
 
-import $ from 'jquery'
+import $ from 'jquery';
 
-import '../css/SearchBar.css'
+import '../css/SearchBar.css';
 
 type SearchBarProps = {
-	loadUser: (channel: string) => void
-}
+  loadUser: (channel: string) => void;
+};
 
-class SearchBar extends React.Component<SearchBarProps, {}> {
-
-  inputKeyUp = (event: React.KeyboardEvent) : void => {
+class SearchBar extends React.Component<SearchBarProps, unknown> {
+  inputKeyUp = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter') {
-      this.buttonClick()
-    }	
-  }
+      this.buttonClick();
+    }
+  };
 
-  buttonClick() {
-    const input = $("#channelInput")
+  buttonClick = (): void => {
+    const input = $('#channelInput');
     const channel: string = input.val().toString();
-    const {loadUser} = this.props
-    if (channel && channel !== "") {
-      loadUser(channel)
-    }  
-  }
+    const { loadUser } = this.props;
+    if (channel && channel !== '') {
+      loadUser(channel);
+    }
+  };
 
-  render() {
-	const inputKeyUp = this.inputKeyUp.bind(this)
-	const buttonClick = this.buttonClick.bind(this)
+  render(): JSX.Element {
+    const inputKeyUp = this.inputKeyUp.bind(this);
+    const buttonClick = this.buttonClick.bind(this);
     return (
       <div id="searchBar">
         <span>Channel Name:&nbsp;</span>
-        <input id="channelInput" type="text" placeholder="test" onKeyUp={inputKeyUp}/>
-        <button id="loadButton" onClick={buttonClick}>Load</button>
+        <input
+          id="channelInput"
+          type="text"
+          placeholder="test"
+          onKeyUp={inputKeyUp}
+        />
+        <button id="loadButton" type="button" onClick={buttonClick}>
+          Load
+        </button>
       </div>
-    )	
+    );
   }
 }
 

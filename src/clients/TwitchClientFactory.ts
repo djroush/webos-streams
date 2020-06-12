@@ -1,16 +1,15 @@
-import * as Twitch from './TwitchClient'
+import * as Twitch from './TwitchClient';
 import TwitchClientMock from './TwitchClientMock';
 import TwitchClientImpl from './TwitchClientImpl';
-import CONFIG from '../index'
+import CONFIG from '../index';
 
 class TwitchClientFactory {
   static getInstance(): Twitch.Client {
-     if (CONFIG.mockTwitch) {
-       return new TwitchClientMock();
-     } else {
-       return new TwitchClientImpl(); 
-     }
+    if (CONFIG.mockTwitch) {
+      return new TwitchClientMock();
+    }
+    return new TwitchClientImpl();
   }
 }
 
-export default TwitchClientFactory
+export default TwitchClientFactory;

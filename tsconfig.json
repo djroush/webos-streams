@@ -11,6 +11,7 @@
       "listFiles":false,
       "declaration":false,
       "noLib":false,
+      "allowJs":true,
       "emitDecoratorMetadata":true,
       "esModuleInterop":true,
       "experimentalDecorators":true,
@@ -25,6 +26,7 @@
       "src/**/*"
    ],
    "exclude":[ 
+      "dist",
       "node_modules"
    ],
    "compileOnSave":true
