@@ -12,7 +12,7 @@ type VideosTabProps = {
 };
 type VideosTabState = {
   videos?: AppVideo[];
-  paginationCursor: string;
+  cursor: string;
 };
 
 class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
@@ -20,6 +20,8 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 
   getVideosCallback(getVideosResponse: Twitch.VideosResponse): void {
     const twitchVideos: Twitch.Video[] = getVideosResponse.data;
+    const { cursor } = getVideosResponse.pagination;
+
     const videos: AppVideo[] = [];
     twitchVideos.forEach((twitchVideo: Twitch.Video) => {
       const now = new Date();
@@ -27,10 +29,12 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
         .replace('%{width}', '304')
         .replace('%{height}', '171');
       const publishedDate = new Date(twitchVideo.published_at);
-      const seconds = Math.round(
+      const relativePublishedSeconds = Math.round(
         (now.getTime() - publishedDate.getTime()) / 1000,
       );
-      const relativePublishedTime = TimeHelper.getFuzzyDuration(seconds);
+      const relativePublishedTime = TimeHelper.getFuzzyDuration(
+        relativePublishedSeconds,
+      );
       const duration = TimeHelper.formatDuration(twitchVideo.duration);
       const viewCount = twitchVideo.view_count;
 
@@ -39,13 +43,18 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
         thumbnailUrl,
         publishedDate,
         relativePublishedTime,
+        relativePublishedSeconds,
         viewCount,
         duration,
       };
       videos.push(video);
     });
-    this.setState({ videos });
+    videos.sort(this.sortMostRecent);
+    this.setState({ videos, cursor });
   }
+
+  sortMostRecent = (a: AppVideo, b: AppVideo): number =>
+    a.relativePublishedSeconds > b.relativePublishedSeconds ? 1 : -1;
 
   loadVideos(user: AppUser): void {
     const callback = this.getVideosCallback.bind(this);
@@ -92,7 +101,7 @@ class VideosTab extends React.Component<VideosTabProps, VideosTabState> {
 
 VideosTab.prototype.state = {
   videos: null,
-  paginationCursor: null,
+  cursor: null,
 };
 
 export default VideosTab;

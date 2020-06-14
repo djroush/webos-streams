@@ -10,6 +10,7 @@ type AppVideo = {
   thumbnailUrl: string;
   publishedDate: Date;
   relativePublishedTime: string;
+  relativePublishedSeconds: number;
   viewCount: number;
   duration: string;
 };
@@ -18,5 +19,6 @@ type AppClip = {
   thumbnailUrl: string;
   createdDate: Date;
   relativeCreatedTime: string;
+  relativeCreatedSeconds: number;
   viewCount: number;
 };

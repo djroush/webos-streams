@@ -9,6 +9,12 @@ type SearchBarProps = {
 };
 
 class SearchBar extends React.Component<SearchBarProps, unknown> {
+  constructor(props: SearchBarProps) {
+    super(props);
+    this.inputKeyUp = this.inputKeyUp.bind(this);
+    this.buttonClick = this.buttonClick.bind(this);
+  }
+
   inputKeyUp = (event: React.KeyboardEvent): void => {
     if (event.key === 'Enter') {
       this.buttonClick();
@@ -25,8 +31,6 @@ class SearchBar extends React.Component<SearchBarProps, unknown> {
   };
 
   render(): JSX.Element {
-    const inputKeyUp = this.inputKeyUp.bind(this);
-    const buttonClick = this.buttonClick.bind(this);
     return (
       <div id="searchBar">
         <span>Channel Name:&nbsp;</span>
@@ -34,9 +38,9 @@ class SearchBar extends React.Component<SearchBarProps, unknown> {
           id="channelInput"
           type="text"
           placeholder="test"
-          onKeyUp={inputKeyUp}
+          onKeyUp={this.inputKeyUp}
         />
-        <button id="loadButton" type="button" onClick={buttonClick}>
+        <button id="loadButton" type="button" onClick={this.buttonClick}>
           Load
         </button>
       </div>

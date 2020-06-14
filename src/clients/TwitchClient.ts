@@ -26,7 +26,7 @@ export type Video = {
 }
 export type ClipsResponse = {
     data: Clip[],
-    pagination?: {
+    pagination: {
       cursor: string
     }
 }

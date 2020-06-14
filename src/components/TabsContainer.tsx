@@ -13,9 +13,9 @@ type TabsContainerProps = {
   videoClick: (event: React.MouseEvent) => void;
 };
 
-export type TabsContainerState = {
-  activeTab?: string;
-  user?: AppUser;
+type TabsContainerState = {
+  activeTab: string;
+  user: AppUser;
   videoid: number;
 };
 
@@ -32,8 +32,10 @@ class TabsContainer extends React.Component<
   clipsTab: ClipsTab;
 
   setState(state: TabsContainerState): void {
-    const oldUser = this.state.user && this.state.user.login;
-    const newUser = state.user && state.user.login;
+    let { user } = this.state;
+    const oldUser = user && user.login;
+    user = state.user;
+    const newUser = user && user.login;
     const oldTab = this.state.activeTab;
     const newTab = state.activeTab;
     const isUserUpdated = newUser !== oldUser && newUser !== null;

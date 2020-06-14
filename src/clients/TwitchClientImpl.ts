@@ -1,6 +1,6 @@
 import $ from 'jquery';
 import * as Twitch from './TwitchClient';
-import CONFIG from '../index';
+import CONFIG from '../Config';
 
 
 class TwitchClientImpl implements Twitch.Client {

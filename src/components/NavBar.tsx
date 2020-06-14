@@ -10,7 +10,6 @@ type NavBarProps = {
 type NavBarState = {
   activeTab?: string;
   user?: AppUser;
-  videoid: number;
 };
 
 class NavBar extends React.PureComponent<NavBarProps, NavBarState> {
@@ -68,7 +67,6 @@ class NavBar extends React.PureComponent<NavBarProps, NavBarState> {
 NavBar.prototype.state = {
   activeTab: null,
   user: null,
-  videoid: null,
 };
 
 export default NavBar;

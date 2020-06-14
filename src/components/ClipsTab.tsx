@@ -13,10 +13,17 @@ type ClipsTabProps = {
 type ClipsTabState = {
   clips: AppClip[];
   clipid: string;
+  cursor: string;
 };
 
 class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
   twitchClient: Twitch.Client = TwitchClientFactory.getInstance();
+
+  constructor(props: ClipsTabProps) {
+    super(props);
+    this.removePlayer = this.removePlayer.bind(this);
+    this.onKeyPress = this.onKeyPress.bind(this);
+  }
 
   onKeyPress = (event: React.KeyboardEvent): void => {
     if (event.key === 'Escape') {
@@ -26,16 +33,20 @@ class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
 
   getClipsCallback(getClipsResponse: Twitch.ClipsResponse): void {
     const twitchClips: Twitch.Clip[] = getClipsResponse.data;
+    const { cursor } = getClipsResponse.pagination;
+
     const clips: AppClip[] = [];
     twitchClips.forEach((twitchClip: Twitch.Clip) => {
       const now = new Date();
       const { id } = twitchClip;
       const createdDate = new Date(twitchClip.created_at);
-      const seconds = Math.round(
+      const relativeCreatedSeconds = Math.round(
         (now.getTime() - createdDate.getTime()) / 1000,
       );
       const thumbnailUrl = twitchClip.thumbnail_url;
-      const relativeCreatedTime = TimeHelper.getFuzzyDuration(seconds);
+      const relativeCreatedTime = TimeHelper.getFuzzyDuration(
+        relativeCreatedSeconds,
+      );
       const viewCount = twitchClip.view_count;
 
       const clip: AppClip = {
@@ -43,20 +54,24 @@ class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
         thumbnailUrl,
         createdDate,
         relativeCreatedTime,
+        relativeCreatedSeconds,
         viewCount,
       };
       clips.push(clip);
     });
-
-    this.setState({ clips, clipid: null });
+    clips.sort(this.sortMostRecent);
+    this.setState({ clips, clipid: null, cursor });
   }
 
   clipClick = (event: React.MouseEvent): void => {
-    const { clips } = this.state;
+    const { clips, cursor } = this.state;
     const clipid = event.currentTarget.getAttribute('data-id');
 
-    this.setState({ clips, clipid });
+    this.setState({ clips, clipid, cursor });
   };
+
+  sortMostRecent = (a: AppClip, b: AppClip): number =>
+    a.relativeCreatedSeconds > b.relativeCreatedSeconds ? 1 : -1;
 
   loadClips(user: AppUser): void {
     const callback = this.getClipsCallback.bind(this);
@@ -64,8 +79,8 @@ class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
   }
 
   removePlayer(): void {
-    const { clips } = this.state;
-    this.setState({ clips, clipid: null });
+    const { clips, cursor } = this.state;
+    this.setState({ clips, clipid: null, cursor });
   }
 
   render(): JSX.Element {
@@ -77,14 +92,12 @@ class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
       return <div id="clips" />;
     }
     if (clipid !== null) {
-      const removePlayer = this.removePlayer.bind(this);
-      const onKeyPress = this.onKeyPress.bind(this);
       return (
         <div id="clips">
           <ClipsPlayer
             clipid={clipid}
-            removePlayer={removePlayer}
-            onKeyPress={onKeyPress}
+            removePlayer={this.removePlayer}
+            onKeyPress={this.onKeyPress}
           />
         </div>
       );
@@ -120,6 +133,7 @@ class ClipsTab extends React.PureComponent<ClipsTabProps, ClipsTabState> {
 ClipsTab.prototype.state = {
   clips: [],
   clipid: null,
+  cursor: null,
 };
 
 export default ClipsTab;

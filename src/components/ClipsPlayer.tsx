@@ -1,12 +1,12 @@
 import React from 'react';
 
 import '../css/ClipsPlayer.css';
-import CONFIG from '../index';
+import CONFIG from '../Config';
 
 type ClipsPlayerProps = {
   clipid: string;
-  removePlayer: () => () => void;
-  onKeyPress: () => (event: React.KeyboardEvent) => void;
+  removePlayer: () => void;
+  onKeyPress: (event: React.KeyboardEvent) => void;
 };
 
 class ClipsPlayer extends React.PureComponent<ClipsPlayerProps, unknown> {
