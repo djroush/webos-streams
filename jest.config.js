@@ -10,7 +10,8 @@ module.exports = {
   },
   preset: "ts-jest",
   roots: [
-    "<rootDir>/src"
+    "<rootDir>/src",
+    "<rootDir>/test"
   ],
   collectCoverage: true,
   collectCoverageFrom: [
@@ -18,13 +19,15 @@ module.exports = {
     "!**/dist/**",
     "!**/node_modules/**"
   ],
+  moduleNameMapper:{
+    "\\.(css|less|sass|scss)$": "<rootDir>/mock/styleMock.js"
+  },
   moduleFileExtensions: [...defaults.moduleFileExtensions, 'ts', 'tsx'],
   transform: {
     "^.+\\.(ts|tsx)$": "ts-jest"
   },
-  testEnvironment: "node",
+  testEnvironment: "jsdom",
   testMatch: [
-    "**/__tests__/**/*.+(ts|tsx|js)",
-    "**/?(*.)+(spec|test).+(ts|tsx|js)"
+    "**/?*\.spec\.ts"
   ],
 };

@@ -1,4 +1,4 @@
-import TimeHelper from './TimeHelper';
+import TimeHelper from '../../src/helper/TimeHelper';
 
 describe('TimeHelper', () => {
   test('getFuzzyDuration(234)', (): void => {
