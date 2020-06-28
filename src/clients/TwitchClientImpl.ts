@@ -16,7 +16,6 @@ class TwitchClientImpl implements Twitch.Client {
   public getUser(username: string, callback: (response: Twitch.UserResponse) => void) {
     console.log(`Loading user: ${username}`);
 
-    const useless = undefined === null;
     const url = `${CONFIG.twitchEndpoint}/users?login=${username}`;
     const request = {
       ...this.baseRequest,

@@ -33,9 +33,9 @@ export function getToken() {
 export function main() {
   const hasToken = checkForToken();
   if (hasToken) {
-    this.renderApp();
+    renderApp();
   } else {
-    this.getToken();
+    getToken();
   }
 }
 
