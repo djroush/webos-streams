@@ -58,6 +58,7 @@
     "ts-jest": "^26.1.0"
   },
   "resolutions": {
+    "lodash": ">=4.17.19",
     "uglify-js": ">=2.6.0"
   }
 }
